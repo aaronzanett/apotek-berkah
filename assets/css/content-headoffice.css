@@ -1,0 +1,284 @@
+/* MASTER PRODUK */
+#produk .tabledata-header {
+    grid-template-columns: 30px 2fr 1fr 1fr 1fr 50px 110px;
+}
+#produk .tabledata-item {
+    grid-template-columns: 30px 2fr 1fr 1fr 1fr 50px 110px;
+}
+#produk .produk-catalog-status {
+    font-size: 18px;
+}
+#produk .produk-catalog-show {
+    color: rgb(5, 197, 5);
+}
+#produk .produk-catalog-dontshow {
+    color: rgb(224, 0, 0);
+}
+#produk .generateKodeProdukAlert {
+    color: red;
+    font-size: 12px;
+    margin-top: 2px;
+}
+#produk #kode_produk {
+    margin-top: 7px;
+}
+
+/* MASTER KATEGORI */
+#kategori .tabledata-header {
+    grid-template-columns: 30px 1fr 55px;
+}
+#kategori .tabledata-item {
+    grid-template-columns: 30px 1fr 55px;
+}
+
+/* MASTER SATUAN */
+#satuan .tabledata-header {
+    grid-template-columns: 30px 1fr 55px;
+}
+#satuan .tabledata-item {
+    grid-template-columns: 30px 1fr 55px;
+}
+
+/* MASTER RAK */
+#rak .tabledata-header {
+    grid-template-columns: 30px 1fr 55px;
+}
+#rak .tabledata-item {
+    grid-template-columns: 30px 1fr 55px;
+}
+
+/* MASTER METODE PEMBAYARAN */
+#metodePembayaran .tabledata-header {
+    grid-template-columns: 30px 1fr 55px;
+}
+#metodePembayaran .tabledata-item {
+    grid-template-columns: 30px 1fr 55px;
+}
+
+/* PERSEDIAAN PRODUK */
+#persediaanProduk .tabledata-header {
+    grid-template-columns: 30px 1fr 1fr;
+}
+#persediaanProduk .tabledata-item {
+    grid-template-columns: 30px 1fr 1fr;
+}
+
+/* DEFECTA */
+#defecta .tabledata-header {
+    grid-template-columns: 30px 1fr 1fr 1fr;
+}
+#defecta .tabledata-item {
+    grid-template-columns: 30px 1fr 1fr 1fr;
+}
+
+/* KADALUWARSA */
+#kadaluwarsa .tabledata-header {
+    grid-template-columns: 30px 1fr 1fr;
+}
+#kadaluwarsa .tabledata-item {
+    grid-template-columns: 30px 1fr 1fr;
+}
+
+/* PEMBELIAN */
+#pembelian .tabledata-header {
+    grid-template-columns: 30px 2fr 1fr 1fr 1fr 1fr 1fr 55px;
+}
+#pembelian .tabledata-item {
+    grid-template-columns: 30px 2fr 1fr 1fr 1fr 1fr 1fr 55px;
+}
+/* TRANSAKSI PEMBELIAN */
+#transaksi.transaksiPembelian .transactionItemsHeader{
+    grid-template-columns: 30px 2fr 30px 1fr 1fr 120px 1fr 1fr 1fr 1fr 1fr;
+}
+#transaksi.transaksiPembelian .transactionItem{
+    grid-template-columns: 30px 2fr 30px 1fr 1fr 120px 1fr 1fr 1fr 1fr 1fr;
+}
+
+/* SUPPLY */
+#supply .tabledata-header {
+    grid-template-columns: 30px 2fr 1fr 1fr 1fr 1fr 1fr 1fr 55px;
+}
+#supply .tabledata-item {
+    grid-template-columns: 30px 2fr 1fr 1fr 1fr 1fr 1fr 1fr 55px;
+}
+/* TRANSAKSI SUPPLY */
+#transaksi.transaksiSupply .transactionItemsHeader{
+    grid-template-columns: 30px 2fr 1fr 30px 1fr 1fr 120px 1fr 1fr;
+}
+#transaksi.transaksiSupply .transactionItem{
+    grid-template-columns: 30px 2fr 1fr 30px 1fr 1fr 120px 1fr 1fr;
+    border-bottom: none;
+}
+#transaksi.transaksiSupply .transactionGroup{
+    border-bottom: 1px solid rgb(241, 239, 239);
+}
+#transaksi.transaksiSupply .modal-content{
+    padding: 20px 5px 20px 20px;
+}
+#transaksi.transaksiSupply .pilihStokProduk{
+    color: #3b3b3b;
+	list-style: none;
+	font-size: 14px;
+	padding: 10px;
+	margin: 2px;
+	border-radius: 3px;
+}
+#transaksi.transaksiSupply .pilihStokProduk:hover{
+    cursor: pointer;
+	background-color: #e9f3ff;
+}
+#transaksi.transaksiSupply .stokProdukKosong{
+    text-align: center;
+    color: #3b3b3b;
+    padding: 5px 0 8px;
+}
+
+/* PENJUALAN */
+#penjualan .tabledata-header {
+    grid-template-columns: 30px 2fr 1fr 1fr 1fr 1fr 1fr 55px;
+}
+#penjualan .tabledata-item {
+    grid-template-columns: 30px 2fr 1fr 1fr 1fr 1fr 1fr 55px;
+}
+
+/* BUKU KAS */
+#bukuKas .tabledata-header {
+    grid-template-columns: 30px 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+#bukuKas .tabledata-item {
+    grid-template-columns: 30px 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+#bukuKas .saldoSaatIni {
+    font-size: 20px;
+}
+
+/* UTANG */
+#utangPiutang .tabledata-header {
+    grid-template-columns: 30px 2fr 1fr 1fr 1fr 1fr 55px;
+}
+#utangPiutang .tabledata-item {
+    grid-template-columns: 30px 2fr 1fr 1fr 1fr 1fr 55px;
+}
+
+/* DAFTAR PENGGUNA */
+#daftarPengguna .tabledata-header {
+    grid-template-columns: 30px 2fr 1fr 1fr 80px;
+}
+#daftarPengguna .tabledata-item {
+    grid-template-columns: 30px 2fr 1fr 1fr 80px;
+}
+
+/* ROLE & HAK AKSES */
+#roleHakAkses .tabledata-header {
+    grid-template-columns: 30px 2fr 1fr 80px;
+}
+#roleHakAkses .tabledata-item {
+    grid-template-columns: 30px 2fr 1fr 80px;
+}
+#roleHakAkses .modal-detail-header .role-detail-header-outletType {
+    color: var(--theme-color);
+}
+#roleHakAkses .modal-detail-body .role-detail-title {
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+/* KONTAK */
+#kontak .tabledata-header {
+    grid-template-columns: 30px 2fr 1fr 80px;
+}
+#kontak .tabledata-item {
+    grid-template-columns: 30px 2fr 1fr 80px;
+}
+
+/* OUTLET */
+#outlet .outletTitle {
+    margin: 5px 10px;
+}
+#outlet .search-group {
+	display: flex;
+	align-items: center;
+	background-color: #ffffff;
+	width: 280px;
+	padding: 0px 12px;
+	border-radius: 8px;
+	font-size: 13px;
+    margin: 12px 0 10px 10px;
+}
+#outlet .search-group .search-searchicon {
+	color: rgb(99, 99, 99);
+}
+#outlet .search-group .tabledata-outlet-search {
+	width: 100%;
+	height: 100%;
+	background: transparent;
+	outline: none;
+	padding: 10px 0;
+	padding-left: 8px;
+	font-size: 13px;
+}
+#outlet .outlet-container, #outlet .outlet-container .outlet-items-container{
+    display: flex;
+    flex-wrap: wrap;
+}
+#outlet .outlet-container .outlet-item {
+    border-radius: 15px;
+    background-color: white;
+    padding: 14px 17px;
+    width: 300px;
+    max-width: 300px;
+    height: 185px;
+    position: relative;
+    margin: 10px;
+}
+#outlet .outlet-container .outlet-item .outlet-header {
+    font-size: 18px;
+}
+#outlet .outlet-container .outlet-item .outlet-address {
+    font-size: 13px;
+    margin: 5px 0 10px;
+}
+#outlet .outlet-container .outlet-item .outlet-serialnumber {
+    font-size: 14px;
+    position: absolute;
+    bottom: 52px;
+}
+#outlet .outlet-container .outlet-item .outlet-action {
+    display: flex;
+    position: absolute;
+    left: 15px;
+    bottom: 12px;
+}
+#outlet .outlet-container .outlet-item .outlet-action div {
+    margin-right: 10px;
+}
+#outlet .outlet-container .add-outlet-item {
+    width: 300px;
+    height: 185px;
+    background-color: white;
+    display: grid;
+    place-content: center;
+    margin: 10px;
+    border-radius: 15px;
+    font-size: 14px;
+    cursor: pointer;
+    user-select: none;
+}
+#outlet .outlet-container .add-outlet-item .add-outlet-item-icon {
+    font-size: 50px;
+    color: var(--theme-color);
+    text-align: center;
+    margin-bottom: 4px;
+}
+#outlet .outlet-container .add-outlet-item:hover .add-outlet-item-icon{
+    filter: brightness(0.8);
+}
+#outlet .outlet-item.outlet-datanotfound{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#outlet .outlet-item.outlet-datanotfound p{
+    font-size: 14px;
+}
+

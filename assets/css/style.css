@@ -1,0 +1,155 @@
+/* format */
+:root {
+	/* --theme-color: #1467d3; */
+	--theme-color: #05be3a;
+	--filter-theme-color: invert(40%) sepia(71%) saturate(1566%) hue-rotate(110deg) brightness(105%) contrast(93%);
+	/* --theme-color: #219b44; */
+	/* --filter-theme-color: invert(33%) sepia(60%) saturate(4342%) hue-rotate(128deg) brightness(102%) contrast(74%); */
+
+	--theme-hover-color: #d3f7de;
+	--normal-link-color: #979797;
+	--filter-normal-link-color: invert(64%) sepia(0%) saturate(0%) hue-rotate(139deg) brightness(98%) contrast(99%);
+	--background-color: rgb(232, 236, 241);
+
+	--logout-button: #fa1a1a;
+	--filter-logout-button: invert(19%) sepia(99%) saturate(5770%) hue-rotate(354deg) brightness(102%) contrast(95%);
+	--filter-white-color : invert(100%) sepia(0%) saturate(0%) hue-rotate(333deg) brightness(101%) contrast(101%);
+}
+@font-face {
+	font-family: 'Roboto regular';
+	src: url(../fonts/Roboto-Regular.ttf);
+	font-weight: normal;
+}
+@font-face {
+	font-family: 'Roboto medium';
+	src: url(../fonts/Roboto-Medium.ttf);
+	font-weight: 500;
+}
+@font-face {
+	font-family: 'Roboto italic';
+	src: url(../fonts/Roboto-Italic.ttf);
+}
+@font-face {
+	font-family: 'Roboto light';
+	src: url(../fonts/Roboto-Light.ttf);
+	font-weight:lighter;
+}
+@font-face {
+	font-family: 'Roboto bold';
+	src: url(../fonts/Roboto-Bold.ttf);
+	font-weight: bold;
+}
+@font-face {
+	font-family: 'Poppins';
+	src: url(../fonts/Poppins-Regular.ttf);
+}
+
+/* css reset */
+*{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-family: 'Roboto', sans-serif;
+	box-sizing: border-box;
+}
+ol, ul {
+	list-style: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+section#content {
+	color: black;
+}
+
+/* button */
+.btn {
+    border-radius: 10px;
+    min-width: 80px;
+    background-color: red;
+    color: rgb(248, 248, 248);
+    display: flex;
+    padding: 8px 6px;
+    font-size: 14px;
+    place-content: center;
+	user-select: none;
+	text-decoration: none;
+	align-items: center;
+	transition: 0.3s;
+}
+.btn-sml {
+	border-radius: 5px;
+    background-color: red;
+    color: rgb(248, 248, 248);
+    display: flex;
+    font-size: 14px;
+    place-content: center;
+	user-select: none;
+	text-decoration: none;
+	align-items: center;
+	height: 25px;
+	width: 25px;
+}
+.btn:hover, .btn-sml:hover {
+	cursor: pointer;
+	filter: brightness(0.9);
+}
+.btn.disabled {
+	filter: brightness(0.7);
+	cursor: not-allowed;
+}
+.btn.disabled:hover {
+	filter: brightness(0.8);
+	cursor: not-allowed;
+}
+.btn i {
+	margin-right: 3px;
+}
+.btn.add {
+	background-color: var(--theme-color);
+}
+.btn.edit {
+	background-color: rgb(14, 109, 252);
+}
+.btn.delete {
+	background-color: rgb(241, 8, 8);
+}
+.btn.cancel {
+	background-color: #8b8b8b;
+}
+
+/* self config */
+.shadow {
+    box-shadow: 0 0 15px -6px rgba(49, 49, 49, 0.5);
+}
+
+.shadow2 {
+    box-shadow: 0 0 17px -3px rgb(145, 145, 145);
+}
+
+.shadow3 {
+	box-shadow: 0 0 10px 1px rgba(63, 63, 63, 0.5);
+}
+
+/* input checkbox & radio */
+
+input[type=checkbox]:hover, input[type=radio]:hover {
+	cursor: pointer;
+}
+
+/* headoffice & admin content */
+#content section {
+    padding: 11px 13px;
+}
+
+#content .pageTitle {
+    font-size: 20px;
+}
+
+
+/* input */
+span.optional-input {
+	color: blue;
+}
