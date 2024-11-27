@@ -1,0 +1,733 @@
+a.link{
+	text-decoration: none;
+	color: inherit;
+}
+
+/* modal */
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 9999;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.5);
+	animation: fadeIn 0.3s ease-in-out;
+	place-content: center;
+	color: black;
+	user-select: none;
+}
+@keyframes fadeIn {
+	from {
+	  opacity: 0;
+	}
+	to {
+	  opacity: 1;
+	}
+}
+.modal-content {
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px 5px 60px 20px;
+	border: 1px solid #888;
+	width: 80%;
+	max-width: 600px;
+	max-height: 95vh;
+	border-radius: 10px;
+	position: relative;
+	animation: slideIn 0.3s ease-in-out;
+	height: auto;
+}
+.modal-content .modal-data, .modal-content .modal-detail {
+	width: 100%;
+	max-height: calc(95vh - 120px);
+	overflow-y: auto;
+	padding-right: 15px;
+}
+@keyframes slideIn {
+	from {
+	  transform: translateY(-50px);
+	  opacity: 0;
+	}
+	to {
+	  transform: translateY(0);
+	  opacity: 1;
+	}
+}
+.fadeOut {
+	animation: fadeOut 0.3s ease-in-out;
+}
+@keyframes fadeOut {
+	from {
+	  opacity: 1;
+	}
+	to {
+	  opacity: 0;
+	}
+  }
+
+  .closeButton {
+	color: #aaa;
+	float: right;
+	font-size: 29px;
+	font-weight: bold;
+	padding: 7px;
+	transform: translateY(-10px);
+  }
+
+  .closeButton:hover,
+  .closeButton:focus {
+	color: rgb(99, 99, 99);
+	text-decoration: none;
+	cursor: pointer;
+}
+.modal form {
+	margin-top: 8px;
+}
+.modal form .form-group {
+	margin-bottom: 20px;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+.modal form .form-group label {
+	margin-bottom: 7px;
+}
+.modal form .form-group input {
+	width: 100%;
+	height: 35px;
+	outline: none;
+	border-radius: 5px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	font-size: 14px;
+	padding: 0 10px;
+}
+
+/* not modal input */
+.form-group {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+.form-group label, label.radioLabel {
+	margin-bottom: 7px;
+}
+.form-group input {
+	width: 100%;
+	height: 35px;
+	outline: none;
+	border-radius: 5px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	font-size: 14px;
+	padding: 0 10px;
+}
+.form-group textarea {
+	width: 100%;
+	outline: none;
+	border-radius: 5px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	font-size: 14px;
+	padding: 5px 5px;
+	resize: vertical;
+}
+select {
+	width: 100%;
+	height: 35px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	outline: none;
+	font-size: 14px;
+	padding: 0 10px;
+	border-radius: 5px;
+}
+
+/* price input */
+.modal form .form-group .inputHargaContainer {
+	display: flex;
+	align-items: center;
+	position: relative;
+}
+.modal form .form-group input.inputHarga {
+	padding-left: 32px;
+}
+.modal form .form-group span.rp {
+	position: absolute;
+	left: 8px;
+	font-size: 14px;
+	transform: translateY(-1px);
+}
+
+/* input side button */
+form .sideButtonContainer {
+	display: flex;
+	flex-direction: row;
+	align-items: end;
+}
+form .form-group .inputSideButton {
+	width: 75%;
+}
+form .form-group .sideButton {
+	width: 25%;
+	height: 35px;
+	margin-left: 8px;
+	min-width: 0;
+}
+
+.modal form .form-group textarea {
+	width: 100%;
+	outline: none;
+	border-radius: 5px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	font-size: 14px;
+	padding: 5px 5px;
+	resize: vertical;
+}
+.modal form .modal-footer {
+	position: absolute;
+	bottom: 12px;
+	right: 14px;
+	display: flex;
+	justify-content: end;
+}
+.modal form .modal-footer button {
+	margin-left: 5px;
+}
+.modal .modal-body .configAlert {
+	font-size: 13px;
+	width: 100%;
+	background-color: rgb(255, 210, 210);
+	border-radius: 5px;
+	border: 1px solid red;
+	color: red;
+	padding: 6px 8px;
+	margin: 5px 0;
+}
+.modal .modal-body .modal-radio-group {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 15px;
+}
+.modal .modal-body .modal-radio-group .modal-radio-item {
+	display: flex;
+	align-items: center;
+}
+.modal .modal-body .modal-radio-group .modal-radio-item input {
+	margin-right: 5px;
+}
+.modal .modal-body .modal-radio-group .modal-radio-title {
+	font-size: 16px;
+	margin-bottom: 7px;
+}
+.modal .modal-body .modal-checkbox-group .modal-checkbox-item {
+	display: flex;
+	align-items: center;
+}
+.modal .modal-body .modal-checkbox-group .modal-checkbox-items {
+	max-height: 200px;
+	overflow: auto;
+}
+.modal .modal-body .modal-checkbox-group .modal-checkbox-item input {
+	margin-right: 5px;
+}
+.modal .modal-body .modal-checkbox-group .modal-checkbox-title {
+	font-size: 16px;
+	margin-bottom: 7px;
+}
+.modal .modal-body .modal-content-btn {
+	width: 100%;
+	height: 35px;
+	margin-bottom: 20px;
+}
+
+/* satuan lainnya */
+.modal .modal-body .satuan_lainnya {
+	width: 100%;
+	display: grid;
+	grid-template-columns: calc(45% - 10px)  calc(10% - 10px) calc(45% - 10px) 30px;
+	grid-template-rows: 1fr;
+	align-items: center;
+}
+.modal .modal-body .satuan_lainnya>*{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.modal .modal-body .satuan_lainnya div>p {
+	font-size: 14px;
+}
+.modal .modal-body .satuan_lainnya div p.nilai_satuan_lainnya_jumlah {
+	margin: 0 8px;
+}
+.modal .modal-body .satuan_lainnya div p.satuan_lainnya_jumlah {
+	margin-right: 8px;
+}
+.modal .modal-body .satuan_lainnya .satuan_lainnya_delete {
+	width: 25px;
+	height: 25px;
+}
+
+/* pembelian produk */
+.pembelian-produk-item{
+	padding: 10px;
+	background-color: #cee4f3;
+	border-radius: 5px;
+	margin-bottom: 5px;
+	display: grid;
+	grid-template-columns: 1fr 35px;
+	align-items: center;
+}
+.pembelian-produk-item-delete{
+	width: 25px;
+	height: 25px;
+	justify-self: right;
+}
+
+.pembelian-produk-item .stack1, .pembelian-produk-item .stack2{
+	display: grid;
+	gap: 6px;
+}
+.pembelian-produk-item .stack1{
+	grid-template-columns: 2fr 1fr 1fr;
+	margin-bottom: 5px;
+}
+.pembelian-produk-item .stack2{
+	grid-template-columns: 2fr 1fr 1fr 2fr;
+}
+
+/* modal image drag & drop */
+.modal .modal-body .form-drop-image .form-drop-image-title{
+	font-size: 16px;
+	margin-bottom: 7px;
+}
+.modal .modal-body .form-drop-image .drop-image-area .image-view {
+	background-color: #ecf8ff;
+	width: 250px;
+	height: 150px;
+	border-radius: 20px;
+	border: 2px dashed #7ec9fc;
+	text-align: center;
+	margin-bottom: 20px;
+	background-position: center;
+	background-size: cover;
+}
+.modal .modal-body .form-drop-image .drop-image-area .drop-image-input{
+	opacity: 0;
+}
+.modal .modal-body .form-drop-image .drop-image-area .image-view img {
+	max-width: 60px;
+	margin-top: 25px;
+}
+.modal .modal-body .form-drop-image .drop-image-area .image-view .image-view-text {
+	text-align: center;
+	margin-top: 10px;
+	font-size: 14px;
+	color: rgb(36, 36, 36);
+}
+
+/* modal dropdown */
+.modal .modal-body select {
+	width: 100%;
+	height: 35px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	outline: none;
+	font-size: 14px;
+	padding: 0 10px;
+	border-radius: 5px;
+}
+
+/* modal detail */
+.modal .modal-detail .modal-detail-header {
+	margin: 15px 0 7px;
+}
+.modal .modal-detail .modal-detail-header .modal-detail-title {
+    font-size: 17px;
+}
+.modal .modal-detail .modal-detail-body {
+	min-height: 300px;
+	overflow-y: auto;
+	margin: 8px 0;
+}
+.modal .modal-detail .modal-detail-footer {
+	position: absolute;
+	bottom: 12px;
+	right: 14px;
+	display: flex;
+	justify-content: end;
+	padding-top: 10px;
+}
+.modal .modal-detail-body .table-detail{
+	width: 100%;
+}
+.modal .modal-detail-body .table-detail tr {
+	height: 25px;
+}
+.modal .modal-detail-body td.detailInfo {
+	width: 30%;
+	vertical-align: top;
+	font-weight: bold;
+	font-size: 14px;
+}
+.modal .modal-detail-body td.detailData {
+	width: 70%;
+	vertical-align: top;
+	font-size: 14px;
+}
+
+/* tabledata */
+.tabledata {
+	width: 100%;
+	background-color: white;
+	border-radius: 15px;
+	margin-top: 5px;
+	padding: 16px 18px;
+}
+
+.tabledata .pagetitle-tabledata {
+	display: flex;
+    align-items: center;
+    justify-content: space-between;
+	margin-bottom: 15px;
+}
+
+.tabledata .tabledata-addbtn {
+	padding: 8px 15px;
+    border-radius: 25px;
+}
+.tabledata .tabledata-addbtn i {
+	margin-right: 5px;
+}
+
+.tabledata .tabledata-header {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 5px;
+}
+
+.tabledata .tabledata-header .tabledata-group {
+	display: flex;
+	align-items: center;
+	background-color: #f0f0f0;
+	border: 1px solid #f0f0f0;
+	width: 280px;
+	padding: 0px 12px;
+	border-radius: 8px;
+	font-size: 13px;
+	user-select: none;
+}
+
+.tabledata .tabledata-header .tabledata-group .tabledata-searchicon {
+	color: rgb(99, 99, 99);
+}
+
+.tabledata .tabledata-header .tabledata-group .tabledata-searchinput {
+	width: 100%;
+	height: 100%;
+	background: transparent;
+	outline: none;
+	padding: 8px 0;
+	padding-left: 8px;
+	font-size: 13px;
+}
+
+.tabledata .tabledata-subheader .tabledata-totaldata {
+	font-size: 12px;
+	margin-top: 10px;
+	color: var(--theme-color);
+	font-weight: bold;
+}
+
+.tabledata .tabledata-body {
+	overflow-x: auto;
+}
+
+.tabledata .tabledata-body .tabledata-body-overflow-lg{
+	min-width: 750px;
+}
+.tabledata .tabledata-body .tabledata-body-overflow-md{
+	min-width: 550px;
+}
+.tabledata .tabledata-body .tabledata-body-overflow-sm{
+	min-width: 300px;
+}
+
+.tabledata .tabledata-body .tabledata-header {
+	height: 40px;
+	width: 100%;
+	border-radius: 10px 10px 0 0;
+	background-color: var(--theme-color);
+	margin-top: 10px;
+	padding: 0px 15px;
+	display: grid;
+	align-items: center;
+	color: white;
+	font-size: 12px;
+	font-weight: bold;
+	gap: 8px;
+}
+
+.tabledata .tabledata-body .tabledata-item {
+	height: 45px;
+	width: 100%;
+	border-left: 1px solid rgba(139, 139, 139, 0.2);
+	border-bottom: 1px solid rgba(139, 139, 139, 0.2);
+	border-right: 1px solid rgba(139, 139, 139, 0.2);
+    display: grid;
+	align-items: center;
+	padding: 0 15px;
+	font-size: 12px;
+	gap: 8px;
+}
+.tabledata .tabledata-body .tabledata-item:hover {
+	background-color: rgb(247, 247, 247);
+}
+.tabledata .tabledata-body .tabledata-item:last-child {
+	border-radius: 0 0 10px 10px;
+}
+.tabledata .tabledata-body #tabledata-item-datanotfound-dataempty {
+	grid-template-columns: 1fr;
+	font-size: 12px;
+	text-align: center;
+}
+
+.tabledata .tabledata-actions {
+	display: flex;
+	font-size: 14px;
+	align-items: center;
+}
+.tabledata .tabledata-actions a {
+	text-decoration: none;
+}
+.tabledata .tabledata-actions i {
+	padding: 6px;
+	border-radius: 3px;
+	display: flex;
+	align-items: center;
+	color: rgb(66, 66, 66);
+	background-color: none;
+	font-size: 15px;
+}
+.tabledata .tabledata-actions i.detail-icon, .tabledata .tabledata-actions i.barqode-icon {
+	font-size: 18px;
+	padding: 5px;
+}
+.tabledata .tabledata-actions i:hover {
+	background-color: #e2e2e2;
+	cursor: pointer;
+}
+
+.tabledata .tabledata-choose-checkbox {
+	width: 13px;
+}
+.tabledata .tabledata-footer {
+	margin-top: 20px;
+}
+.tabledata .tabledata-footer .choose-items {
+	display: flex;
+}
+.tabledata .tabledata-footer .choose-items button{
+	margin-right: 5px;
+	padding: 8px 14px;
+}
+.tabledata .tabledata-footer .choose-items button.tabledata-choose {
+	padding: 8px 20px;
+}
+
+/* transaction page */
+section#transaksi {
+	padding: 0;
+	height: 100%;
+	min-width: 1200px;
+}
+section#transaksi div.transactionItems input:read-only {
+	border: none;
+}
+.transactionPageHeader{
+	width: 100%;
+	background-color: var(--theme-color);
+	color: white;
+	padding: 12px;
+}
+.transactionPageHeader .transactionNav{
+	display: flex;
+	align-items: center;
+}
+.transactionPageHeader .transactionNav a{
+	font-size: 18px;
+	margin-right: 6px;
+	color: white;
+}
+.transactionPageHeader .transactionSearch {
+	margin-top: 10px;
+	position: relative;
+	background-color: white;
+	border-radius: 17px;
+	width: 70%;
+}
+.transactionPageHeader .transactionSearch .input {
+	width: 100%;
+	position: relative;
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+	height: 33px;
+	border-radius: 17px;
+}
+.transactionPageHeader .transactionSearch input {
+	width: calc(100% - 30px);
+	height: 100%;
+	padding-left: 14px;
+	outline: none;
+}
+.transactionPageHeader .transactionSearch label {
+	color: #888;
+	font-size: 14px;
+}
+.transactionPageHeader .transactionSearch .inputResult{
+	position: absolute;
+	width: 100%;
+	top: 38px;
+	padding: 5px;
+	background-color: white;
+	border-radius: 5px;
+	max-height: 400px;
+	overflow-y: auto;
+	z-index: 100;
+}
+.transactionPageHeader .transactionSearch .inputResult ul li{
+	color: #3b3b3b;
+	list-style: none;
+	font-size: 12px;
+	padding: 9px;
+	margin: 2px;
+	border-radius: 3px;
+}
+.transactionPageHeader .transactionSearch .inputResult ul li:hover{
+	cursor: pointer;
+	background-color: #e9f3ff;
+}
+/* transaction content */
+.transactionPage form{
+	display: grid;
+	grid-template-columns: 3fr 1fr;
+	gap: 10px;
+	padding: 10px;
+}
+/* transaction price input */
+.transactionPage form .form-group .inputHargaContainer {
+	display: flex;
+	align-items: center;
+	position: relative;
+}
+.transactionPage form .form-group input.inputHarga {
+	padding-left: 32px;
+}
+.transactionPage form .form-group span.rp {
+	position: absolute;
+	left: 8px;
+	font-size: 14px;
+	transform: translateY(-1px);
+}
+.transactionItems{
+	background-color: white;
+	border-radius: 5px;
+	height: 100%;
+	overflow-y: auto;
+}
+.transactionItemsHeader, .transactionItem{
+	display: grid;
+	gap: 7px;
+	align-items: center;
+	font-size: 13px;
+}
+.transactionItemsHeader{
+	padding: 5px 15px;
+	height: 45px;
+}
+.transactionItem{
+	padding: 10px 15px;
+	max-height: 55px;
+	border-bottom: 1px solid rgb(241, 239, 239);
+}
+.transactionItemsHeader{
+	color: #3b3b3b;
+	background-color: #f8f5f5;
+	font-weight: bold;
+	border-radius: 5px 5px 0 0;
+}
+
+.transactionData{
+	background-color: white;
+	border-radius: 5px;
+	max-height: 100%;
+	width: 100%;
+	padding: 15px 10px;
+}
+.transactionData .form-group {
+	margin-bottom: 20px;
+}
+
+.transactionBtn {
+	padding: 12px 10px;
+	width: 50%;
+}
+
+.transaksiConfigAlert {
+	font-size: 13px;
+	width: 100%;
+	background-color: rgb(255, 210, 210);
+	border-radius: 5px;
+	border: 1px solid red;
+	color: red;
+	padding: 6px 8px;
+	margin: 5px 0 10px 0;
+}
+
+.form-group.transaksiKadaluwarsa {
+	width: 120px;
+}
+
+#kadaluwarsa #rentang{
+	max-width: 250px;
+}
+
+/* filter */
+.filter-rentangWaktu{
+	display: flex;
+}
+.filter-rentangWaktu .form-group{
+	flex-direction: row;
+	align-items: center;
+	margin: 0 5px;
+}
+.filter-rentangWaktu .form-group input{
+	height: 33px;
+}
+.filter-rentangWaktu .form-group label{
+	font-size: 13px;
+	margin-bottom: 0;
+}
+
+/* pemberitahuan utang piutang ketika transaksi */
+.bayarTransaksiInfo {
+	font-size: 13px;
+	margin-top: 7px;
+	border-radius: 5px;
+	color: orange;
+	border: 1px solid orange;
+	padding: 6px 8px;
+	background-color: rgb(255, 239, 210);
+}
+
+/* media query */
+@media only screen and (max-width: 700px) {
+	.tabledata {
+		padding: 16px 13px;
+	}
+}
+
+@media only screen and (max-width: 550px) {
+	.modal-content {
+		width: 92%;
+	}
+}

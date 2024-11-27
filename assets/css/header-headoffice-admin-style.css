@@ -1,0 +1,476 @@
+@import url(style.css);
+
+/* ---------- MY STYLE ---------- */
+body {
+    background-color: var(--background-color);
+    overflow-x: hidden;
+}
+
+div.wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+.d-none{
+    display: none;
+}
+
+/* side-navbar */
+nav {
+    min-width: 250px;
+    max-width: 250px;
+    min-height: 100vh;
+    background-color: var(--theme-color);
+    z-index: 999;
+    padding: 3px;
+    transition: all 0.3s;
+    user-select: none;
+    position: fixed;
+    color: white;
+}
+nav.off {
+    transform: translateX(-100%);
+}
+
+main#main{
+    height: 100vh;
+    width: 100%;
+    padding-left: 250px;
+    transition: all 0.3s;
+}
+main#main.off{
+    padding-left: 0;
+}
+
+nav div.nav-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 0 5px 20px;
+}
+
+nav div.apotek-logo {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding: 5px;
+}
+
+nav div.apotek-logo img{
+    max-width: 100%;
+}
+
+nav div.apotek-identity {
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    margin-left: 10px;
+}
+
+nav div.apotek-identity #apotek-name {
+    font-size: 15px;
+    font-weight: bolder;
+    margin-bottom: 5px;
+}
+
+nav div.apotek-identity #outlet-id {
+    font-size: 14px;
+}
+
+nav div#close-nav {
+    height: 22px;
+    cursor: pointer;
+    padding: 3px;
+    position: absolute;
+    top: 20px;
+    right: 14px;
+}
+
+nav div#close-nav img {
+    height: 100%;
+    filter: var(--filter-white-color);
+}
+
+nav div.dateTime-container {
+    height: 65px;
+    width: 100%;
+    padding: 8px 20px;
+    text-align: center;
+}
+
+nav div.dateTime-innercontainer {
+    width: 100%;
+    height: 100%;
+    border-top: 2px solid rgb(255, 251, 0);
+    border-bottom: 2px solid rgb(255, 251, 0);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+nav div.dateTime-innercontainer #date {
+    font-size: 14px;
+}
+nav div.dateTime-innercontainer #time {
+    font-size: 15px;
+    margin-top: 2px;
+}
+
+nav div.navigations {
+    width: 100%;
+    margin-top: 8px;
+    height: calc(100vh - 153px);
+    overflow-y : auto;
+    padding: 0 15px 0 7px;
+}
+
+nav div.navigations::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+}
+nav div.navigations::-webkit-scrollbar-button {
+    width: 0px;
+    height: 0px;
+}
+nav div.navigations::-webkit-scrollbar-thumb {
+    background: #ffd500;
+    border: 0px none #ffffff;
+    border-radius: 50px;
+}
+nav div.navigations::-webkit-scrollbar-thumb:hover {
+    background: #f1c900;
+}
+nav div.navigations::-webkit-scrollbar-thumb:active {
+    background: #ebc400;
+}
+nav div.navigations::-webkit-scrollbar-track {
+    background: #ffffff;
+    border: 0px none #ffffff;
+    border-radius: 50px;
+}
+nav div.navigations::-webkit-scrollbar-track:hover {
+    background: #ffffff;
+}
+nav div.navigations::-webkit-scrollbar-track:active {
+    background: #ffffff;
+}
+nav div.navigations::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+/* navigation */
+nav div.navigations div.navigation-item, nav div.navigations div.logout {
+    margin: 6px 0;
+}
+
+nav .head-nav {
+    font-weight: bold;
+}
+
+nav div.navigations div.navigation-item a, nav div.navigations div.logout a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    height: 45px;
+    padding: 21px 12px;
+    font-size: 13px;
+    border-radius: 12px;
+    transition: 0.2s;
+    color: white;
+    font-weight: normal;
+}
+
+nav div.navigations div.navigation-item a div.navigation-icon, nav div.navigations div.logout a div.navigation-icon {
+    height: inherit;
+    display: grid;
+    margin-right: 7px;
+    place-items: center;
+}
+
+nav div.navigations div.navigation-item a div.navigation-icon img, nav div.navigations div.logout a div.navigation-icon img{
+    filter: var(--filter-white-color);
+    height: 19px;
+}
+
+nav div.separator-line {
+    width: 80%;
+    border-bottom: 2px solid rgb(223, 223, 223);
+    height: 0;
+    margin: 20px auto;
+}
+
+nav div.separator-explanation-head p {
+    color: white;
+    font-size: 13px;
+    margin: 0 0 9px 9px;
+} 
+
+nav div.separator-explanation p {
+    color: white;
+    font-size: 13px;
+    margin: 12px 0 9px 9px;
+}
+
+nav div.navigations div.navigation-item a:hover {
+    color: rgb(0, 0, 0);
+    background-color: white;
+}
+nav div.navigations div.navigation-item a:hover div.navigation-icon img {
+    filter: var(--filter-theme-color);
+}
+
+nav div.navigations div.navigation-item.active a {
+    color: rgb(0, 0, 0);
+    background-color: white;
+}
+nav div.navigations div.navigation-item.active a div.navigation-icon img {
+    filter: var(--filter-theme-color);
+}
+
+nav div.navigations div.logout a#logout:hover {
+    color: var(--logout-button);
+    background-color: white;
+}
+nav div.navigations div.logout a#logout:hover div.navigation-icon img {
+    filter: var(--filter-logout-button);
+}
+
+nav div.navigations div.navigation-item a.active {
+    color: black;
+    background-color: white;
+}
+
+nav div.navigations div.navigation-item a.active div.navigation-icon img.active-img {
+    filter: var(--filter-theme-color);
+}
+
+/* sub navigation */
+nav div.navigations div.navigation-item-subnav {
+    margin: 6px 0;
+    cursor: default;
+    border-radius: 12px;
+}
+
+nav div.navigations div.navigation-item-subnav div.subnav-header {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    height: 45px;
+    padding: 21px 12px;
+    font-size: 13px;
+    border-radius: 7px;
+    color: inherit;
+    font-weight: normal;
+    position: relative;
+}
+
+nav div.navigations div.navigation-item-subnav img.dropdown-icon {
+    position: absolute;
+    height: 12px;
+    right: 10px;
+    filter: var(--filter-white-color);
+    transition: 0.3s;
+}
+
+nav div.navigations div.navigation-item-subnav.active img.dropdown-icon {
+    transform: rotate(90deg);
+}
+
+nav div.navigations div.navigation-item-subnav div.navigation-icon {
+    height: inherit;
+    display: grid;
+    margin-right: 7px;
+    place-items: center;
+}
+
+nav div.navigations div.navigation-item-subnav div.navigation-icon img{
+    filter: var(--filter-white-color);
+    height: 19px;
+}
+
+nav div.navigations div.navigation-item-subnav div.subnav-header {
+    position: relative;
+}
+
+nav div.navigations div.navigation-item-subnav div.subnav-header span.cover{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+}
+
+nav div.navigations div.navigation-item-subnav div.subnav-items {
+    margin: 0 15px 0 24px;
+    padding-bottom: 10px;
+}
+
+nav div.navigations div.navigation-item-subnav div.subnav-items a {
+    text-decoration: none;
+}
+
+nav div.navigations div.navigation-item-subnav div.subnav-items a p {
+    font-size: 12px;
+    padding: 9px 14px;
+    color: white;
+    transition: 0.2s;
+    border-radius: 7px;
+}
+
+nav div.navigations div.navigation-item-subnav:hover {
+    background-color: white;
+    color: black;
+}
+nav div.navigations div.navigation-item-subnav:hover .dropdown-item{
+    color: rgb(102, 102, 102);
+}
+nav div.navigations div.navigation-item-subnav:hover div.navigation-icon img {
+    filter: var(--filter-theme-color);
+}
+nav div.navigations div.navigation-item-subnav:hover img.dropdown-icon {
+    filter: none;
+}
+nav div.navigations div.navigation-item-subnav div.subnav-items a p:hover {
+    color: #0fac3c;
+    background-color: rgb(241, 238, 238);
+}
+
+nav div.navigations div.navigation-item-subnav.activate {
+    background-color: white;
+    color: black;
+}
+nav div.navigations div.navigation-item-subnav.activate .dropdown-item{
+    color: rgb(102, 102, 102);
+}
+nav div.navigations div.navigation-item-subnav.activate div.navigation-icon img {
+    filter: var(--filter-theme-color);
+}
+nav div.navigations div.navigation-item-subnav.activate img.dropdown-icon {
+    filter: none;
+}
+nav div.navigations div.navigation-item-subnav.activate div.subnav-items a p.active {
+    color: #0fac3c;
+    background-color: rgb(241, 238, 238);
+}
+
+/* header */
+header {
+    height: 50px;
+    width: 100%;
+    background-color: var(--theme-color);
+    padding: 0 10px;
+    z-index: 997;
+    position: relative;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+}
+
+header div.left-header {
+    display: flex;
+    align-items: center;
+}
+
+header div.left-header>div {
+    align-items: center;
+    margin-right: 14px;
+}
+
+header div.left-header div#nav-toggle {
+    height: 40px;
+    cursor: pointer;
+    padding: 5px;
+    transition: 0.2s;
+}
+
+header div.left-header div#nav-toggle.off {
+    transform: rotate(-180deg);
+}
+
+header div.left-header div#nav-toggle img {
+    height: 100%;
+    filter: var(--filter-white-color);
+}
+
+header div.left-header div.page-information h6, header div.left-header div.user-information h6 {
+    font-size: 11px;
+    font-weight: normal;
+}
+
+header div.left-header div.page-information p, header div.left-header div.user-information p {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+div#close-nav {
+    display: none;
+}
+
+#content {
+    height: calc(100vh - 50px);
+    overflow: auto;
+}
+
+#content::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+#content::-webkit-scrollbar-button {
+    width: 0px;
+    height: 0px;
+}
+#content::-webkit-scrollbar-thumb {
+    background: #ffd500;
+    border: 0px none var(--background-color);
+    border-radius: 50px;
+}
+#content::-webkit-scrollbar-thumb:hover {
+    background: #ffd500;
+}
+#content::-webkit-scrollbar-thumb:active {
+    background: #ffd500;
+}
+#content::-webkit-scrollbar-track {
+    background: var(--background-color);
+    border: 0px none var(--background-color);
+    border-radius: 0px;
+}
+#content::-webkit-scrollbar-track:hover {
+    background: var(--background-color);
+}
+#content::-webkit-scrollbar-track:active {
+    background: var(--background-color);
+}
+#content::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+@media (max-width: 910px) {
+    main#main {
+        padding-left: 0;
+    }
+
+    div#close-nav {
+        display: block;
+    }
+    
+    span.layer-cover {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgb(0, 0, 0);
+        opacity: 0.5;
+        z-index: 998;
+    }
+    
+    span.layer-cover.off {
+        display: none;
+    }
+}

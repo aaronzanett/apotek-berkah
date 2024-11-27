@@ -1,0 +1,249 @@
+<?php
+$data['supply'] = $this->model('SupplyModel')->getAllSupply();
+?>
+
+<?php if (isset($_SESSION['alert']['action'])) : ?>
+    <div id="alert" 
+    data-alertheader="<?= $_SESSION['alert']['header'] ?>"
+    data-alertdescription="<?= $_SESSION['alert']['description'] ?>"
+    data-alerttype="<?= $_SESSION['alert']['type'] ?>"
+    data-alertaction="<?= $_SESSION['alert']['action'] ?>"
+    ></div>
+<?php endif; SetAlert::deleteAlert(); ?> 
+            
+<section id="supply">
+<div class="tabledata shadow">
+        <div class="pagetitle-tabledata">
+            <h2 class="pageTitle">Supply cabang</h2>
+            <a href="<?= BASEURL ?>/app/headoffice/transaksiSupply" class="link" data-target="transaksiSupply">
+                <button class="btn edit openModalBtn tabledata-addbtn add-supply"><i class="bi bi-plus-lg"></i> Supply</button>
+            </a>
+        </div>
+
+        <div class="tabledata-header">
+            <div class="tabledata-group">
+                <i class="bi bi-search tabledata-searchicon"></i>
+                <input type="text" class="tabledata-searchinput tabledata-supply-search" placeholder="Cari supply...">
+            </div>
+        </div>
+
+        <div class="tabledata-body">
+            <div class="tabledata-body-overflow-lg">
+                <div class="tabledata-header">
+                    <p>No</p>
+                    <p>Faktur</p>
+                    <p>Tanggal/waktu</p>
+                    <p>Pembayaran</p>
+                    <p>Outlet dikirim</p>
+                    <p>Pemesan</p>
+                    <p>Headofficer</p>
+                    <p>Total</p>
+                    <p>Actions</p>
+                </div>
+    
+                
+                <div id="tabledata-items">
+                    <?php if (count($data['supply']) !== 0) { ?>
+                        <?php $i = 1; foreach ($data['supply'] as $supply ) : ?>
+                            <div class="tabledata-item">
+                                <p class="no"><?= $i++ ?></p>
+                                <p><?= $supply['faktur'] ?></p>
+                                <p><?= $supply['datetime'] ?></p>
+                                <p><?= $supply['payment'] ?></p>
+                                <p><?= $supply['outlet_name'] ?></p>
+                                <p><?= $supply['orderer'] ?></p>
+                                <p><?= $supply['headofficer'] ?></p>
+                                <p>Rp. <?= number_format($supply['total_price'],0,",","."); ?></p>
+                                <div class="tabledata-actions">
+                                    <div class="action openModalBtn detail-supply" data-id="<?= $supply['id'] ?>"><i class="bi bi-eye detail-icon"></i></div>
+                                </div>
+                            </div>
+                        <?php endforeach;?>
+                    <?php } else { ?>
+                        <div class="tabledata-item" id="tabledata-item-datanotfound-dataempty">data masih kosong</div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close closeButton">&times;</span>
+                <h2 class="modal-title">Modal Title</h2>
+            </div>
+            <div class="modal-detail">
+                <div class="modal-detail-header"></div>
+                <div class="modal-detail-body"></div>
+                <div class="modal-detail-footer">
+                    <button type="button" class="btn cancel close">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    // fungsi format ribuan
+    function formatRibuan(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+    
+    function crudOperation(){
+        // detail
+        $('.detail-supply').on('click', function() {
+            $(".modal-title").html("Detail supply");
+            $('.configAlert').addClass('d-none')
+            $(".modal-footer button[type=submit]").removeClass('disabled')
+            const id = $(this).data("id");
+            
+            $.ajax({
+                url: "<?= BASEURL ?>/headofficeOpp/getDataEditSupply",
+                data: {id: id},
+                method: "post",
+                dataType: "json",
+                success: function (data) {
+                    const supply = data.supply;
+                    const supplyD = data.detail_supply;
+
+                    let supplyDetail = `<table class="table-detail">
+                    <tr>
+                        <td class="detailInfo"><p>Faktur:</p></td>
+                        <td class="detailData">`+supply.faktur+`</td>
+                    </tr>
+                    <tr>
+                        <td class="detailInfo"><p>Oulet dikirim:</p></td>
+                        <td class="detailData">`+supply.outlet_name+`</td>
+                    </tr>
+                    <tr>
+                        <td class="detailInfo"><p>Headofficer:</p></td>
+                        <td class="detailData">`+supply.headofficer+`</td>
+                    </tr>
+                    <tr>
+                        <td class="detailInfo"><p>Pemesan:</p></td>
+                        <td class="detailData">`+supply.orderer+`</td>
+                    </tr>
+                    <tr>
+                        <td class="detailInfo"><p>Pembayaran:</p></td>
+                        <td class="detailData">`+supply.payment+`</td>
+                    </tr>
+                    <tr>
+                        <td class="detailInfo"><p>Tanggal/waktu:</p></td>
+                        <td class="detailData">`+supply.datetime+`</td>
+                    </tr>
+                    <tr>
+                        <td class="detailInfo"><p>Note:</p></td>
+                        <td class="detailData">`+supply.note+`</td>
+                    </tr>
+                    <tr>
+                        <td class="detailInfo"><p>Total:</p></td>
+                        <td class="detailData">Rp. `+formatRibuan(supply.total_price)+`</td>
+                    </tr>
+                    <tr>
+                        <td class="detailInfo"><p>Bayar:</p></td>
+                        <td class="detailData">Rp. `+formatRibuan(supply.dibayar)+`</td>
+                    </tr>
+                    <tr>
+                        <td class="detailInfo"><p>Piutang:</p></td>
+                        <td class="detailData">Rp. `+formatRibuan(supply.piutang)+`</td>
+                    </tr>
+                    <tr style="border-bottom: 2px solid black">
+                        <td class="detailInfo"><br></td>
+                        <td class="detailData"></td>
+                    </tr>`;
+
+                    let no = 1;
+                    for (let i = 0; i < supplyD.length; i++) {
+                        const p = supplyD[i];
+
+                        supplyDetail += `
+                        <tr>
+                            <td class="detailInfo"><br></td>
+                            <td class="detailData"></td>
+                        </tr>
+                        <tr>
+                            <td class="detailInfo"><p>Item `+ no++ +`</p></td>
+                            <td class="detailData"></td>
+                        </tr>
+                        <tr>
+                            <td class="detailInfo"><p>Nama Produk:</p></td>
+                            <td class="detailData">`+p.produk_name+`</td>
+                        </tr>
+                        <tr>
+                            <td class="detailInfo"><p>Kuantitas:</p></td>
+                            <td class="detailData">`+p.quantity+` `+p.unit_name+`</td>
+                        </tr>
+                        <tr>
+                            <td class="detailInfo"><p>Tgl. Kadaluwarsa:</p></td>
+                            <td class="detailData">`+p.kadaluwarsa+`</td>
+                        </tr>
+                        <tr>
+                            <td class="detailInfo"><p>Harga / satuan:</p></td>
+                            <td class="detailData">Rp. `+formatRibuan(p.unit_price)+`</td>
+                        </tr>
+                        <tr>
+                            <td class="detailInfo"><p>Subtotal:</p></td>
+                            <td class="detailData">Rp. `+formatRibuan(p.subtotal)+`</td>
+                        </tr>
+                        <tr style="border-bottom: 1px dashed rgb(90,90,90)">
+                            <td class="detailInfo"><br></td>
+                            <td class="detailData"></td>
+                        </tr>
+                    `
+                    }
+                        
+                    supplyDetail += `</table>`;
+
+                    $('.modal-detail-body').html(supplyDetail)
+                },
+            });
+        })
+    }
+            
+    crudOperation();
+
+    // search
+    $('.tabledata-supply-search').on('input', function() {
+        let keyword = $(this).val();
+
+        $.ajax({
+            url: "<?= BASEURL ?>/headofficeOpp/searchSupply",
+            data: { keyword: keyword },
+            method: "post",
+            dataType: "json",
+            success: function (data) {
+                let i = 1;
+                let supply = "";
+                data.forEach(p => {
+                    supply += `<div class="tabledata-item">
+                                <p class="no">`+ i++ +`</p>
+                                <p>`+ p.faktur +`</p>
+                                <p>`+ p.datetime +`</p>
+                                <p>Rp. `+ formatRibuan(p.total_price) +`</p>
+                                <p>`+ p.payment +`</p>
+                                <p>`+ p.outlet_name +`</p>
+                                <p>`+ p.orderer +`</p>
+                                <p>`+ p.headofficer +`</p>
+                                <div class="tabledata-actions">
+                                    <div class="action openModalBtn detail-supply" data-id="`+ p.id +`"><i class="bi bi-eye detail-icon"></i></div>
+                                </div>
+                              </div>`;
+                });
+
+                if(data.length !== 0) {
+                    $('#tabledata-items').html(supply);
+                } else {
+                    $('#tabledata-items').html(`<div class="tabledata-item" id="tabledata-item-datanotfound-dataempty">
+                        data tidak ditemukan !
+                    </div>`);
+                }
+
+                crudOperation();
+            },
+        });
+    });
+</script>
+
+<script src="<?= BASEURL?>/assets/js/global-script.js"></script>
