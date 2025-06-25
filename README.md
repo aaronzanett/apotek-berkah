@@ -48,7 +48,7 @@ npm install
 
 ### 🖼️ Screenshots
 
-(Tambahkan nanti: `![Dashboard Screenshot](screenshot.png)`)
+![Dashboard](screenshots/dashboard-headoffice.png)
 
 ---
 
