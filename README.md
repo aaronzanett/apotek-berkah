@@ -47,8 +47,20 @@ npm install
 ---
 
 ### 🖼️ Screenshots
-
+### Login
+![Login](screenshots/login.png)
+### Dashboard
 ![Dashboard](screenshots/dashboard-headoffice.png)
+### Produk
+![Produk](screenshots/master-produk-headoffice.png)
+### Tambah Produk
+![Tambah Produk](screenshots/tambah-produk-headoffice.png)
+### Transaksi Pembelian
+![Transaksi Pembelian](screenshots/transaksi-pembelian.png)
+### Daftar Cabang
+![Daftar Cabang](screenshots/daftar-cabang-headoffice.png)
+### Kasir Cabang
+![Kasir Cabang](screenshots/kasir-cabang.png)
 
 ---
 
