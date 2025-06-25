@@ -56,7 +56,7 @@ npm install
 ### Tambah Produk
 ![Tambah Produk](screenshots/tambah-produk-headoffice.png)
 ### Transaksi Pembelian
-![Transaksi Pembelian](screenshots/transaksi-pembelian.png)
+![Transaksi Pembelian](screenshots/transaksi-pembelian-headoffice.png)
 ### Daftar Cabang
 ![Daftar Cabang](screenshots/daftar-cabang-headoffice.png)
 ### Kasir Cabang
