@@ -1,1 +1,0 @@
-<h2>coming soon !!! (Apotek Berkah 2.0)</h2>

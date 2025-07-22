@@ -30,7 +30,7 @@ $data['persediaanProduk'] = $this->model('ProdukModel')->getAllPersediaanProdukH
                                 <div class="tabledata-item">
                                     <p class="no"><?= $i++ ?></p>
                                     <p><?= $produk['product_name'] ?></p>
-                                    <p><?= $produk['total_jumlah'] ?></p>
+                                    <p><?= $produk['total_jumlah'] ?> <?= $produk['satuan_name'] ?></p>
                                 </div>
                             <?php endforeach;?>
                             <?php } else { ?>
@@ -62,13 +62,14 @@ $data['persediaanProduk'] = $this->model('ProdukModel')->getAllPersediaanProdukH
         method: "post",
         dataType: "json",
         success: function (data) {
+            console.log(data);
             let i = 1;
             let produk = "";
             data.forEach(p => {
                 produk += `<div class="tabledata-item">
                                     <p class="no">`+ i++ +`</p>
                                     <p>`+ p.product_name +`</p>
-                                    <p>`+ p.total_jumlah +`</p>
+                                    <p>`+ p.total_jumlah + ' ' + p.satuan_name + `</p>
                                 </div>`;
             });
 

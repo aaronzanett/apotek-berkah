@@ -1,1 +1,0 @@
-<h2>penjualan per pelanggan headoffice</h2>

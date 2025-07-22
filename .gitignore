@@ -50,3 +50,4 @@ coverage/
 *.tar.gz
 *.zip
 *.sql
+.qodo

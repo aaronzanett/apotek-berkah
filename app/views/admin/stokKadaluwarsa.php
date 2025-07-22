@@ -11,9 +11,9 @@
             </div>
             <select name="rentang" id="rentang" required>
                 <option value="current">Sudah kadaluwarsa</option>
-                <option value="3months">Kadaluwarsa < 3 bulan</option>
-                <option value="6months">Kadaluwarsa < 6 bulan</option>
-                <option value="1year">Kadaluwarsa < 1 tahun</option>
+                <option value="3months">Kadaluwarsa kurang dari 3 bulan</option>
+                <option value="6months">Kadaluwarsa kurang dari 6 bulan</option>
+                <option value="1year">Kadaluwarsa kurang dari 1 tahun</option>
             </select>
         </div>
 

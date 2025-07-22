@@ -1,1 +1,0 @@
-<h2>penjualan per hari headoffice</h2>

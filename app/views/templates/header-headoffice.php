@@ -13,9 +13,9 @@
     <link rel="stylesheet" href="<?= BASEURL ?>/assets/css/content-headoffice.css">
     <!-- bootstrap icon -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- jquery -->
-    <script src="<?= BASEURL ?>/assets/js/jquery.js"></script>
-    <!-- sweetalert -->
+    <!-- jQuery -->
+    <script src="<?= BASEURL ?>/assets/js/jquery.js"></script>    
+    <!-- SweetAlert2 -->
     <script src="<?= BASEURL ?>/assets/js/sweetalert2.all.min.js"></script>
 </head>
 <body id="body">
@@ -54,7 +54,7 @@
                             <div class="navigation-item-subnav">
                                 <div class="subnav-header">
                                     <div class="navigation-icon">
-                                        <img src="<?= BASEURL ?>/assets/img/icons/<?= $data['navigations'][$i][0] ?>.png" alt="">
+                                        <img src="<?= BASEURL ?>/assets/img/icons/<?= $data['navlinks'][$i][0] ?>.png" alt="">
                                     </div>
                                     <p class="head-nav"><?= $data['navigations'][$i][0] ?></p>
                                     <span class="cover"></span>
@@ -72,7 +72,7 @@
                             <div class="navigation-item">
                                 <a href="<?= BASEURL ?>/app/headoffice/<?= $data['navlinks'][$i] ?>" class="link" data-target="<?= $data['navlinks'][$i] ?>">
                                     <div class="navigation-icon">
-                                        <img src="<?= BASEURL ?>/assets/img/icons/<?= $data['navigations'][$i] ?>.png" alt="">
+                                        <img src="<?= BASEURL ?>/assets/img/icons/<?= $data['navlinks'][$i] ?>.png" alt="">
                                     </div>
                                     <p class="head-nav"><?= $data['navigations'][$i] ?></p>
                                 </a>
@@ -90,7 +90,7 @@
                             <div class="navigation-item">
                                 <a href="<?= BASEURL ?>/app/headoffice/<?= $data['insightlinks'][$i] ?>" class="link" data-target="<?= $data['insightlinks'][$i] ?>">
                                     <div class="navigation-icon">
-                                        <img src="<?= BASEURL ?>/assets/img/icons/<?= $data['insights'][$i] ?>.png" alt="">
+                                        <img src="<?= BASEURL ?>/assets/img/icons/<?= $data['insightlinks'][$i] ?>.png" alt="">
                                     </div>
                                     <p><?= $data['insights'][$i] ?></p>
                                 </a>

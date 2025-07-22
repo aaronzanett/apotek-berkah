@@ -3,6 +3,48 @@ a.link{
 	color: inherit;
 }
 
+/* dashboard */
+#dashboard {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	margin-top: 5px;
+}
+#dashboard .stats {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 15px;
+}
+#dashboard .dashboard-card {
+	width: 200px;
+	height: 150px;
+	background-color: white;
+	padding: 20px;
+	border-radius: 10px;
+}
+#dashboard .dashboard-card img {
+	filter: var(--filter-theme-color);
+	width: 37px;
+}
+#dashboard .dashboard-card h3 {
+	font-size: 20px;
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+#dashboard .dashboard-card p {
+	font-size: 14px;
+}
+#dashboard .dashboard-chart {
+	background-color: white;
+	border-radius: 10px;
+	padding: 5px;
+}
+#dashboard .dashboard-chart #dashboardMonthData {
+	height: 400px;
+	max-width: 400px;
+	min-width: 200px;
+}
+
 /* modal */
 .modal {
 	display: none;
@@ -337,6 +379,9 @@ form .form-group .sideButton {
 }
 
 /* modal detail */
+.modal .modal-detail {
+	height: auto;
+}
 .modal .modal-detail .modal-detail-header {
 	margin: 15px 0 7px;
 }
@@ -344,7 +389,6 @@ form .form-group .sideButton {
     font-size: 17px;
 }
 .modal .modal-detail .modal-detail-body {
-	min-height: 300px;
 	overflow-y: auto;
 	margin: 8px 0;
 }
@@ -537,7 +581,7 @@ form .form-group .sideButton {
 section#transaksi {
 	padding: 0;
 	height: 100%;
-	min-width: 1200px;
+	min-width: 1400px;
 }
 section#transaksi div.transactionItems input:read-only {
 	border: none;
@@ -612,6 +656,7 @@ section#transaksi div.transactionItems input:read-only {
 	grid-template-columns: 3fr 1fr;
 	gap: 10px;
 	padding: 10px;
+	height: auto;
 }
 /* transaction price input */
 .transactionPage form .form-group .inputHargaContainer {
@@ -631,8 +676,9 @@ section#transaksi div.transactionItems input:read-only {
 .transactionItems{
 	background-color: white;
 	border-radius: 5px;
-	height: 100%;
+	height: auto;
 	overflow-y: auto;
+	align-self: flex-start;
 }
 .transactionItemsHeader, .transactionItem{
 	display: grid;
@@ -644,14 +690,20 @@ section#transaksi div.transactionItems input:read-only {
 	padding: 5px 15px;
 	height: 45px;
 }
+.transactionItemsContainer{
+	overflow-y: visible;
+	min-height: 50vh;
+	max-height: 100vh;
+}
 .transactionItem{
 	padding: 10px 15px;
+	height: 55px;
 	max-height: 55px;
 	border-bottom: 1px solid rgb(241, 239, 239);
 }
 .transactionItemsHeader{
-	color: #3b3b3b;
-	background-color: #f8f5f5;
+	color: white;
+	background-color: #2a6bf7;
 	font-weight: bold;
 	border-radius: 5px 5px 0 0;
 }
@@ -659,9 +711,10 @@ section#transaksi div.transactionItems input:read-only {
 .transactionData{
 	background-color: white;
 	border-radius: 5px;
-	max-height: 100%;
+	height: auto;
 	width: 100%;
 	padding: 15px 10px;
+	align-self: flex-start;
 }
 .transactionData .form-group {
 	margin-bottom: 20px;
@@ -717,6 +770,31 @@ section#transaksi div.transactionItems input:read-only {
 	border: 1px solid orange;
 	padding: 6px 8px;
 	background-color: rgb(255, 239, 210);
+}
+
+/* tentang aplikasi */
+#tentangAplikasi a {
+	text-decoration: none;
+}
+#tentangAplikasi .download-button {
+	padding: 3px 5px;
+	background-color: #1969ff;
+	align-items: center;
+	justify-content: center;
+	border-radius: 5px;
+	display: flex;
+	height: 45px;
+	width: 250px;
+	color: white;
+	transition: 0.3s;
+}
+#tentangAplikasi .download-button:hover {
+	background-color: #0855e6;
+}
+#tentangAplikasi .download-button img {
+	filter: var(--filter-white-color);
+	height: 26px;
+	margin-right: 10px;
 }
 
 /* media query */

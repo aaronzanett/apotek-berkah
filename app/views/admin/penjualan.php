@@ -192,7 +192,7 @@ $data['penjualan'] = $this->model('PenjualanModel')->getAllPenjualanByIdOutlet($
                         </tr>
                         <tr>
                             <td class="detailInfo"><p>Harga / `+p.unit_name+` (pokok):</p></td>
-                            <td class="detailData">Rp. `+formatRibuan(p.jual_price)+`</td>
+                            <td class="detailData">Rp. `+formatRibuan(p.harga_jual_pokok)+`</td>
                         </tr>
                         <tr>
                             <td class="detailInfo"><p>Jenis Harga:</p></td>

@@ -103,13 +103,13 @@ $('.alertLogout').on('click', function(e) {
 // live date & time
 function liveDateTime() {
   $.ajax({
-    url: "http://localhost/Apotek%20Berkah/liveDateTime/getDate",
+    url: "http://apotek-berkah.test/liveDateTime/getDate",
     success: function(date) {
       $("#date").html(date)
     }
   })
   $.ajax({
-    url: "http://localhost/Apotek%20Berkah/liveDateTime/getTime",
+    url: "http://apotek-berkah.test/liveDateTime/getTime",
     success: function(time) {
       $("#time").html(time)
     }

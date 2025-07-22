@@ -69,11 +69,11 @@ $data['defecta'] = $this->model('ProdukModel')->getAllDefectaByIdOutlet($_SESSIO
             let produk = "";
             data.forEach(p => {
                 produk += `<div class="tabledata-item">
-                                    <p class="no">`+ i++ +`</p>
-                                    <p>`+ p.product_name +`</p>
-                                    <p>`+ p.total_jumlah +`</p>
-                                    <p>`+ p.min_stock +`</p>
-                                </div>`;
+                                <p class="no">`+ i++ +`</p>
+                                <p>`+ p.product_name +`</p>
+                                <p>`+ p.total_jumlah + ' ' + p.satuan +`</p>
+                                <p>`+ p.min_stock + ' ' + p.satuan +`</p>
+                            </div>`;
             });
 
             if(data.length !== 0) {

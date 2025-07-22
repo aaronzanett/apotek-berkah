@@ -24,9 +24,20 @@ class PenjualanModel {
         }
         return $allResult;
     }
+
+    // dashboard needed
+    public function getTodayPenjualan(){
+        $this->db->query("SELECT COALESCE(SUM(total_price), 0) AS penjualan_hari_ini FROM penjualan WHERE DATE(datetime) = CURDATE()");
+        return $this->db->singleResult()['penjualan_hari_ini'];
+    }
+    public function getTodayPenjualanOutlet($outletId){
+        $this->db->query("SELECT COALESCE(SUM(total_price), 0) AS penjualan_hari_ini FROM penjualan WHERE DATE(datetime) = CURDATE() AND outlet_id = :outletId");
+        $this->db->bind('outletId', $outletId);
+        return $this->db->singleResult()['penjualan_hari_ini'];
+    }
     
     public function addPenjualan($data){
-        $queryPenjualan = "INSERT INTO penjualan (id, outlet_id, outlet_name, cashier, subtotal, diskon, biaya_embalase, ongkos_kirim, biaya_lainnya, total_price, dibayar, kembalian, datetime, payment, faktur, note) VALUES ('', :outlet_id, :outlet_name, :cashier, :subtotal, :diskon, :biaya_embalase, :ongkos_kirim, :biaya_lainnya, :total_price, :dibayar, :kembalian, :datetime, :payment, :faktur, :note)";
+        $queryPenjualan = "INSERT INTO penjualan (outlet_id, outlet_name, cashier, subtotal, diskon, biaya_embalase, ongkos_kirim, biaya_lainnya, total_price, dibayar, kembalian, datetime, payment, faktur, note) VALUES (:outlet_id, :outlet_name, :cashier, :subtotal, :diskon, :biaya_embalase, :ongkos_kirim, :biaya_lainnya, :total_price, :dibayar, :kembalian, :datetime, :payment, :faktur, :note)";
         $kembalian = $data['bayar'] - $data['total'];
         $this->db->query($queryPenjualan);
         $this->db->bind('outlet_id', $data['outlet_id']);
@@ -62,11 +73,11 @@ class PenjualanModel {
         if(isset($data['idProduk']) && isset($data['produkName'])){
             // detail penjualan
             foreach ($data['idProduk'] as $i => $ip) {
-                $queryDetailPenjualan = "INSERT INTO detail_penjualan (id, penjualan_id, produk_name, jual_price, unit_name, quantity, unit_value, jenis_harga, unit_price, diskon, subtotal) VALUES ('', :penjualan_id, :produk_name, :jual_price, :unit_name, :quantity, :unit_value, :jenis_harga, :unit_price, :diskon, :subtotal)";
+                $queryDetailPenjualan = "INSERT INTO detail_penjualan (penjualan_id, produk_name, harga_jual_pokok, unit_name, quantity, unit_value, jenis_harga, unit_price, diskon, subtotal) VALUES (:penjualan_id, :produk_name, :harga_jual_pokok, :unit_name, :quantity, :unit_value, :jenis_harga, :unit_price, :diskon, :subtotal)";
                 $this->db->query($queryDetailPenjualan);
                 $this->db->bind('penjualan_id', $idPenjualan);
                 $this->db->bind('produk_name', $data['produkName'][$i]);
-                $this->db->bind('jual_price', $data['hargaJualPokok'][$i]);
+                $this->db->bind('harga_jual_pokok', $data['hargaJualPokok'][$i]);
                 $this->db->bind('unit_name', $data['satuanName'][$i]);
                 $this->db->bind('quantity', $data['kuantitas'][$i]);
                 $this->db->bind('unit_value', $data['satuanPokok'][$i]);
@@ -79,7 +90,7 @@ class PenjualanModel {
 
             // kurang persediaan produk outlet
             foreach ($data['idProduk'] as $i => $ip) {
-                $stokProdukOutlet = "SELECT * FROM persediaan_produk_outlet WHERE id_produk = :idProduk AND id_outlet = :outletId AND kadaluwarsa_date >= CURDATE() ORDER BY kadaluwarsa_date ASC";
+                $stokProdukOutlet = "SELECT * FROM persediaan_produk_outlet WHERE id_produk = :idProduk AND id_outlet = :outletId AND kadaluwarsa_date > DATE_ADD(CURDATE(), INTERVAL 3 MONTH) ORDER BY kadaluwarsa_date ASC";
                 $this->db->query($stokProdukOutlet);
                 $this->db->bind('idProduk', $ip);
                 $this->db->bind('outletId', $data['outlet_id']);
@@ -122,7 +133,7 @@ class PenjualanModel {
             }
 
             // cashbook outlet
-            $queryCashBook = "INSERT INTO cashbook_outlet (id, outlet_id, status, faktur, activity, user, datetime, total) VALUES ('', :outlet_id, :status, :faktur, :activity, :user, :datetime, :total)";
+            $queryCashBook = "INSERT INTO cashbook_outlet (outlet_id, status, faktur, activity, user, datetime, total) VALUES (:outlet_id, :status, :faktur, :activity, :user, :datetime, :total)";
             $this->db->query($queryCashBook);
             $this->db->bind('outlet_id', $data['outlet_id']);
             $this->db->bind('status', 'pemasukan');
@@ -134,16 +145,15 @@ class PenjualanModel {
             $this->db->execute();
         }
         
-        // // direct halaman print
-        // if(isset($data['cetakStruk']) && $data['cetakStruk'] == 'cetakStruk'){
-        //     $_SESSION['id_penjualan'] = 2;
-        //     $_SESSION['ukuran_kertas'] = $data['lebarKertasStruk'];
-        //     $_SESSION['nama_printer'] = $data['namaPrinter'];
-        //     header('Location:'.BASEURL.'/app/admin/cetakStruk');
-        // }else{
-        //     header('Location:'.BASEURL.'/app/admin/kasir');
-        // }
-        header('Location:'.BASEURL.'/app/admin/kasir');
+        // direct halaman print
+        if(isset($data['cetakStruk']) && $data['cetakStruk'] == 'cetakStruk'){
+            $_SESSION['id_penjualan'] = 16;
+            $_SESSION['ukuran_kertas'] = $data['lebarKertasStruk'];
+            $_SESSION['nama_printer'] = $data['namaPrinter'];
+            header('Location:'.BASEURL.'/app/admin/cetakStrukMike42');
+        }else{
+            header('Location:'.BASEURL.'/app/admin/kasir');
+        }
     }
     
     public function getDataEditPenjualan($id){

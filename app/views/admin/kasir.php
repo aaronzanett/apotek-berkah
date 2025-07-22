@@ -173,7 +173,7 @@ $printers = getPrinters();
                             </div>
 
                             <div class="modal-status-bayar">
-                                <h2 class="modal-status-kurang status-title">Heee, Duite Kurang</h2>
+                                <h2 class="modal-status-kurang status-title">Uang Kurang</h2>
                                 <h2 class="modal-status-pas status-title">Pembayaran Pas</h2>
                                 <h2 class="modal-status-kembali status-title">Kembalian</h2>
                                 <h1 class="status-nominal"></h1>
@@ -641,6 +641,8 @@ $(function(){
             return false;
         }
 
+        bayarFunction();
+
         let modal = document.getElementById("modal");
         modal.style.display = "block";
     })
@@ -751,8 +753,21 @@ $(function(){
         }
     }
     bayarFunction();
-    $(".transactionBtn").on('click', bayarFunction)
+    $(".transactionBtn").on('click', function(){
+        bayarFunction;
+        focusAtEnd('#bayar');
+    })
     $("#bayar").on('input', bayarFunction)
+
+    // Fungsi untuk memfokuskan kursor di akhir teks
+    function focusAtEnd(inputSelector) {
+        const input = document.querySelector(inputSelector); // Ambil elemen input
+        if (input) {
+            input.focus();
+            const length = input.value.length; // Hitung panjang value di input
+            input.setSelectionRange(length, length); // Set kursor di akhir value
+        }
+    }
 })
 </script>
 

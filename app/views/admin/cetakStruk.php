@@ -1,108 +1,86 @@
 <?php
-use Mike42\Escpos\Printer;
-use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+require_once('vendor/autoload.php');
+require_once('vendor/tecnickcom/tcpdf/tcpdf.php');
 
-$idPenjualan = $_SESSION['id_penjualan'];
-$ukuranKertas = $_SESSION['ukuran_kertas'];
-$namaPrinter = $_SESSION['nama_printer'];
+// Dummy Parameter
+$idPenjualan = 999;
+$namaOutlet = "Apotek Dummy Sehat";
+$alamatOutlet = "Jl. Contoh Nomor 123, Kota Dummy";
+$tanggalWaktu = date("Y-m-d H:i:s");
 
-require_once("app/models/PenjualanModel.php");
-require_once("app/models/OutletModel.php");
+// Items Dummy
+$itemsDummy = [
+    ["name" => "Paracetamol", "unit_price" => 10000, "quantity" => 2],
+    ["name" => "Vitamin C", "unit_price" => 15000, "quantity" => 1],
+];
+$totalHarga = 50000;
 
-$penjualanModel = new PenjualanModel();
-$outletModel = new OutletModel();
+$ukuranKertas = $_SESSION['ukuran_kertas'] ?? 58;
+$charPerLine = ($ukuranKertas == 58) ? 32 : 48;
+$paperSize = ($ukuranKertas == 58) ? array(0, 0, 580, 3276) : array(0, 0, 800, 3276);
 
-// data transaksi (info transaksi, info barang)
-$penjualanData = $penjualanModel->getDataEditPenjualan($idPenjualan);
-$penjualan = $penjualanData['penjualan'];
-$penjualanItems = $penjualanData['detail_penjualan'];
+// Inisialisasi TCPDF
+$pdf = new TCPDF('P', 'mm', $paperSize, true, 'UTF-8', false);
+$pdf->SetMargins(5, 5, 5);
+$pdf->AddPage();
+$pdf->SetFont('courier', '', 10);
 
-// data header struk
-$outletName = $penjualan['outlet_name'];
-$outletAddress = $outletModel->getDataEditOutlet($penjualan['outlet_id'])['address'];
+// Header
+$pdf->Cell(0, 6, $namaOutlet, 0, 1, 'C');
+$pdf->Cell(0, 6, $alamatOutlet, 0, 1, 'C');
+$pdf->Cell(0, 6, str_repeat("-", $charPerLine), 0, 1, 'C');
 
-// hitung karakter per baris berdasarkan ukuran kertas
-$charPerLine;
-if($ukuranKertas == 58){
-    $charPerLine = 32;
-}else if($ukuranKertas == 80){
-    $charPerLine = 48;
+// Transaksi
+$pdf->Cell(0, 6, "Tanggal/Waktu: " . $tanggalWaktu, 0, 1, 'L');
+$pdf->Cell(0, 6, "No Faktur: DUMMY-$idPenjualan", 0, 1, 'L');
+$pdf->Cell(0, 6, str_repeat("-", $charPerLine), 0, 1, 'C');
+
+// Detail Items
+$totalQuantity = 0;
+foreach ($itemsDummy as $item) {
+    $itemName = substr($item['name'], 0, $charPerLine - 10);
+    $line = number_format($item['unit_price'], 0, ',', '.') . " x " . $item['quantity'] . " = ";
+    $price = "Rp " . number_format($item['unit_price'] * $item['quantity'], 0, ',', '.');
+
+    $pdf->Cell(0, 6, $itemName, 0, 1, 'L');
+    $pdf->Cell(0, 6, $line . $price, 0, 1, 'R');
+    $totalQuantity += $item['quantity'];
 }
 
-$connector = new WindowsPrintConnector($namaPrinter);
-$printer = new Printer($connector);
+// Total
+$pdf->Cell(0, 6, str_repeat("-", $charPerLine), 0, 1, 'C');
+$pdf->Cell(0, 6, "Total Barang: " . $totalQuantity, 0, 1, 'L');
+$pdf->Cell(0, 6, "Total Harga: Rp " . number_format($totalHarga, 0, ',', '.'), 0, 1, 'L');
 
-try {
-    function alignText($left, $right, $width) {
-        $leftWidth = strlen($left);
-        $rightWidth = strlen($right);
-        $spaceWidth = $width - $leftWidth - $rightWidth;
-        return $left . str_repeat(' ', $spaceWidth) . $right;
-    }
+// Footer
+$pdf->Ln(5);
+$pdf->Cell(0, 6, "Barang yang dibeli tidak dapat dikembalikan", 0, 1, 'C');
 
-    function truncateText($text, $maxLength) {
-        return (strlen($text) > $maxLength) ? substr($text, 0, $maxLength - 3) . '...' : $text;
-    }
+// Path untuk menyimpan PDF
+$savePath = __DIR__ . "/../../../assets/img/struk_dummy_$idPenjualan.pdf";
 
-    // Cetak header struk
-    $printer->setJustification(Printer::JUSTIFY_CENTER);
-    $printer->text("$outletName\n");
-    $printer->text("$outletAddress\n");
-    // $printer->text("Telp: 08129238923\n");
-    $printer->text(str_repeat("-", $charPerLine) . "\n");
-    
-    // Cetak info transaksi
-    $printer->setJustification(Printer::JUSTIFY_LEFT);
-    $printer->text("Tgl/wkt: " . $penjualan['datetime'] . "\n");
-    $printer->text("No: " . $penjualan['faktur'] . "\n");
-    $printer->text("Ksr: " . $penjualan['cashier'] . "\n");
-    $printer->text("Pel: " . $penjualan['payment'] . "\n");
-    $printer->text(str_repeat("-", $charPerLine) . "\n");
-
-    // Cetak detail item belanja
-    $totalItems = 0;
-    $totalQuantity = 0;
-    foreach ($penjualanItems as $index => $item) {
-        $itemName = truncateText(($index+1) . ". " . $item['produk_name'], $charPerLine - 10);
-        $printer->text($itemName . " " . $item['quantity'] . "\n");
-        $line = "    " . number_format($item['unit_price'], 0, ',', '.') . " x " . $item['quantity'] . " = ";
-        $price = "Rp " . number_format($item['unit_price'] * $item['quantity'], 0, ',', '.');
-        $printer->text(alignText($line, $price, $charPerLine) . "\n");
-        $totalItems++;
-        $totalQuantity += $item['quantity'];
-    }
-    $printer->text(str_repeat("-", $charPerLine) . "\n");
-    $printer->text(alignText("BRS=".$totalItems."    QTY=".$totalQuantity, "Rp " . number_format($penjualan['total_price'], 0,',','.'), $charPerLine) . "\n");
-    $printer->text(alignText("Tunai", "Rp " . number_format($penjualan['dibayar'],0,',','.'), $charPerLine) . "\n");
-    $printer->text(str_repeat("-", $charPerLine) . "\n");
-    $printer->text(alignText("Kembali", "Rp " . number_format($penjualan['kembalian'],0,',','.'), $charPerLine) . "\n");
-
-    // Cetak footer struk
-    echo "test 1";
-    $printer->text("\n");
-    $printer->setJustification(Printer::JUSTIFY_CENTER);
-    $printer->text("Barang yang sudah dibeli tidak\n");
-    $printer->text("dapat dikembalikan\n");
-
-    echo "test 2";
-    $printer->feed(4);
-
-    echo "test 3";
-    $printer->cut();
-    echo "test 4";
-} catch (Exception $e) {
-    echo "test 5";
-    echo "Error during printing: " . $e->getMessage();
-} finally {
-    echo "test 6";
-    $printer->close();
-    echo "test 7";
-    echo "Printer closed.";
-    echo "test 8";
+if (!file_exists(dirname($savePath))) {
+    mkdir(dirname($savePath), 0777, true); // Buat folder jika belum ada
 }
 
-    echo "test 9";
-echo '<script type="text/javascript">
-       window.location.href = "'.BASEURL.'/app/admin/kasir";
-      </script>';
+$pdf->Output($savePath, 'F'); // Simpan PDF
+
 ?>
+
+<script type="text/javascript">
+window.onload = function() {
+    var fileUrl = '/assets/img/struk_dummy_<?php echo $idPenjualan; ?>.pdf';
+    var iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = fileUrl;
+    document.body.appendChild(iframe);
+
+    iframe.onload = function() {
+        iframe.contentWindow.print();
+        setTimeout(function() {
+            alert("Print selesai!");
+            window.location.href = "javascript:window.history.back()";
+        }, 30000);
+    };
+};
+</script>

@@ -30,11 +30,11 @@ $data['persediaanProduk'] = $this->model('ProdukModel')->getAllPersediaanProdukB
                                 <div class="tabledata-item">
                                     <p class="no"><?= $i++ ?></p>
                                     <p><?= $produk['product_name'] ?></p>
-                                    <p><?= $produk['total_jumlah'] ?></p>
+                                    <p><?= $produk['total_jumlah'] ?> <?= $produk['satuan_name'] ?></p>
                                 </div>
                             <?php endforeach;?>
                             <?php } else { ?>
-                            <div class="tabledata-item" id="tabledata-item-datanotfound-dataempty">data masih kosong</div>
+                            <div class="tabledata-item" id="tabledata-item-datanotfound-dataempty">stok masih kosong</div>
                         <?php } ?>
                     </div>
                 </form>
@@ -69,7 +69,7 @@ $data['persediaanProduk'] = $this->model('ProdukModel')->getAllPersediaanProdukB
                 produk += `<div class="tabledata-item">
                                     <p class="no">`+ i++ +`</p>
                                     <p>`+ p.product_name +`</p>
-                                    <p>`+ p.total_jumlah +`</p>
+                                    <p>`+ p.total_jumlah + ' ' + p.satuan + `</p>
                                 </div>`;
             });
 

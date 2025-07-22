@@ -102,6 +102,7 @@ $data['pembelian'] = $this->model('PembelianModel')->getAllPembelian();
                 method: "post",
                 dataType: "json",
                 success: function (data) {
+                    console.log(data)
                     const pembelian = data.pembelian;
                     const pembelianD = data.detail_pembelian;
 
@@ -186,7 +187,7 @@ $data['pembelian'] = $this->model('PembelianModel')->getAllPembelian();
                         </tr>
                         <tr>
                             <td class="detailInfo"><p>Harga / `+p.unit_name+` (pokok):</p></td>
-                            <td class="detailData">Rp. `+formatRibuan(p.base_unit_price)+`</td>
+                            <td class="detailData">Rp. `+formatRibuan(p.harga_beli_pokok * p.unit_value)+`</td>
                         </tr>
                         <tr>
                             <td class="detailInfo"><p>Jenis Harga:</p></td>

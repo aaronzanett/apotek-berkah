@@ -1,6 +1,6 @@
 <?php
 // baseurl
-const BASEURL = 'http://localhost/Apotek%20Berkah';
+const BASEURL = 'http://apotek-berkah.test';
 
 // database
 const DB_HOST = 'localhost';

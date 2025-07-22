@@ -1,0 +1,16 @@
+Apotek Berkah V 2.0
+
+- Dashboard ✅
+- Cek stok cabang lain ✅
+- No.batch setiap stok ✅
+- Stok opname (monitoring stok)
+- Retur stok (ganti kadaluwarsa & no.batch)
+- Penarikan stok (pengurangan stok, kompensasi uang, total biaya obat)
+- Display transaksi berdasarkan jangka waktu + laporan bentuk MC office/pdf
+- Transaksi penjualan bisa diedit
+
+- Cetak struk dari server
+- Settings (nama printer)
+
+- Merapihkan tampilan
+- Bug transaksi ?

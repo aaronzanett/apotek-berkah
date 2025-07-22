@@ -268,19 +268,51 @@ class ProdukModel {
         return $this->db->singleResult();
     }
 
+    // cek stok outlet lain
+    public function getStokOutletLain($id_outlet){
+        $query = "SELECT p.id AS id_produk,
+               p.product_name AS nama_produk,
+               SUM(CASE 
+                   WHEN pp.kadaluwarsa_date > CURDATE() + INTERVAL 3 MONTH 
+                    AND pp.id_outlet != :id_outlet THEN pp.amount
+                   ELSE 0 
+               END) AS total_amount,
+               s.name AS satuan,
+               o.name AS nama_outlet,
+               o.address AS alamat_outlet
+        FROM produk p
+        LEFT JOIN persediaan_produk_outlet pp ON p.id = pp.id_produk
+        LEFT JOIN satuan s ON p.main_unit = s.id
+        LEFT JOIN outlet o ON pp.id_outlet = o.id
+        WHERE pp.kadaluwarsa_date > CURDATE() + INTERVAL 3 MONTH
+        GROUP BY p.id, p.product_name, s.name, o.id, o.name, o.address
+        HAVING total_amount > 0
+        ORDER BY p.id;";
+        $this->db->query($query);
+        $this->db->bind('id_outlet', $id_outlet);
+        return $this->db->allResult();
+    }
+
     // supply
     public function getPersediaanProdukHeadoffice($id){
-        $this->db->query("SELECT pp.id_produk, SUM(pp.amount) AS total_jumlah, p.product_name 
+        $this->db->query("SELECT pp.id_produk, SUM(pp.amount) AS total_jumlah, p.product_name
         FROM persediaan_produk_headoffice pp 
-        JOIN produk p ON pp.id_produk = p.id WHERE p.id = :id
+        JOIN produk p ON pp.id_produk = p.id 
+        WHERE p.id = :id 
+        AND pp.kadaluwarsa_date > CURDATE() + INTERVAL 3 MONTH
         GROUP BY pp.id_produk");
         $this->db->bind('id', $id);
         return $this->db->singleResult();
     }
     public function getStokPersediaanProdukHeadoffice($id){
-        $this->db->query("SELECT pp.id, pp.id_produk, pp.amount AS total_jumlah, p.product_name, pp.kadaluwarsa_date, s.name AS satuan_name
+        $this->db->query("SELECT pp.id, pp.id_produk, SUM(pp.amount) AS total_jumlah, p.product_name, pp.no_batch, pp.kadaluwarsa_date, pp.harga_beli_pokok, s.name AS satuan_name
         FROM persediaan_produk_headoffice pp 
-        JOIN produk p ON pp.id_produk = p.id JOIN satuan s ON p.main_unit = s.id WHERE p.id = :id ORDER BY pp.kadaluwarsa_date ASC");
+        JOIN produk p ON pp.id_produk = p.id 
+        JOIN satuan s ON p.main_unit = s.id 
+        WHERE p.id = :id 
+        AND pp.kadaluwarsa_date > CURDATE() + INTERVAL 3 MONTH
+        GROUP BY pp.id, pp.id_produk, pp.no_batch, pp.kadaluwarsa_date, s.name
+        ORDER BY pp.kadaluwarsa_date ASC;");
         $this->db->bind('id', $id);
         $this->db->execute();
         $stok = $this->db->allResult();
@@ -292,9 +324,14 @@ class ProdukModel {
         return $stok;
     }
     public function getStokPersediaanProdukHeadofficeBarqode($barqode){
-        $this->db->query("SELECT pp.id, pp.id_produk, pp.amount AS total_jumlah, p.product_name, pp.kadaluwarsa_date, s.name AS satuan_name
+        $this->db->query("SELECT pp.id, pp.id_produk, SUM(pp.amount) AS total_jumlah, p.product_name, pp.no_batch, pp.kadaluwarsa_date, s.name AS satuan_name
         FROM persediaan_produk_headoffice pp 
-        JOIN produk p ON pp.id_produk = p.id JOIN satuan s ON p.main_unit = s.id WHERE p.barqode = :barqode ORDER BY pp.kadaluwarsa_date ASC");
+        JOIN produk p ON pp.id_produk = p.id 
+        JOIN satuan s ON p.main_unit = s.id 
+        WHERE p.barqode = :barqode
+        AND pp.kadaluwarsa_date > CURDATE() + INTERVAL 3 MONTH
+        GROUP BY pp.id, pp.id_produk, pp.no_batch, pp.kadaluwarsa_date, s.name
+        ORDER BY pp.kadaluwarsa_date ASC;");
         $this->db->bind('barqode', $barqode);
         $this->db->execute();
         $stok = $this->db->allResult();
@@ -310,7 +347,7 @@ class ProdukModel {
     public function getPersediaanProdukOutlet($id, $outletId){
         $this->db->query("SELECT pp.id_produk, SUM(pp.amount) AS total_jumlah, p.product_name 
         FROM persediaan_produk_outlet pp 
-        JOIN produk p ON pp.id_produk = p.id WHERE p.id = :id AND pp.id_outlet = :outletId
+        JOIN produk p ON pp.id_produk = p.id WHERE p.id = :id AND pp.id_outlet = :outletId AND pp.kadaluwarsa_date > DATE_ADD(CURDATE(), INTERVAL 3 MONTH)
         GROUP BY pp.id_produk");
         $this->db->bind('id', $id);
         $this->db->bind('outletId', $outletId);
@@ -319,22 +356,27 @@ class ProdukModel {
 
     // persediaan produk 
     public function getAllPersediaanProdukHeadoffice(){
-        $this->db->query("SELECT pp.id_produk, SUM(pp.amount) AS total_jumlah, p.product_name 
-        FROM persediaan_produk_headoffice pp 
-        JOIN produk p ON pp.id_produk = p.id
-        GROUP BY pp.id_produk");
+        $this->db->query("SELECT p.id AS id_produk, IFNULL(SUM(CASE WHEN pp.kadaluwarsa_date > DATE_ADD(CURDATE(), INTERVAL 3 MONTH) THEN pp.amount ELSE 0 END), 0)AS total_jumlah, p.product_name, s.name AS satuan_name   
+            FROM produk p
+            LEFT JOIN persediaan_produk_headoffice pp ON pp.id_produk = p.id
+            LEFT JOIN satuan s ON p.main_unit = s.id
+            GROUP BY p.id
+            ORDER BY total_jumlah DESC
+        ");
         return $this->db->allResult();
     }
     public function searchAllPersediaanProdukHeadoffice($keyword){
-        $this->db->query("SELECT pp.id_produk, SUM(pp.amount) AS total_jumlah, p.product_name 
-            FROM persediaan_produk_headoffice pp 
-            JOIN produk p ON pp.id_produk = p.id 
-            WHERE p.product_name LIKE :keyword
-            GROUP BY pp.id_produk");
+        $this->db->query("SELECT pp.id_produk, SUM(pp.amount) AS total_jumlah, p.product_name, s.name AS satuan_name
+            FROM produk p 
+            JOIN persediaan_produk_headoffice pp ON p.id = pp.id_produk
+            JOIN satuan s ON p.main_unit = s.id
+            WHERE p.product_name LIKE :keyword AND pp.kadaluwarsa_date > DATE_ADD(CURDATE(), INTERVAL 3 MONTH)
+            GROUP BY pp.id_produk
+        ");
         $this->db->bind('keyword', "%$keyword%");
         return $this->db->allResult();
     }
-
+    
     // public function getAllPersediaanProdukOutlet(){
     //     $this->db->query("SELECT pp.id_produk, SUM(pp.amount) AS total_jumlah, p.product_name 
     //     FROM persediaan_produk_outlet pp 
@@ -351,46 +393,54 @@ class ProdukModel {
     //     $this->db->bind('keyword', "%$keyword%");
     //     return $this->db->allResult();
     // }
-    public function getAllPersediaanProdukByIdOutlet($id){
-        $this->db->query("SELECT pp.id_produk, SUM(pp.amount) AS total_jumlah, p.product_name 
-        FROM persediaan_produk_outlet pp 
-        JOIN produk p ON pp.id_produk = p.id 
-        WHERE pp.id_outlet = :id 
-        GROUP BY pp.id_produk");
+    public function getAllPersediaanProdukByIdOutlet($id) {
+        $this->db->query("SELECT p.id AS id_produk, IFNULL(SUM(CASE WHEN pp.kadaluwarsa_date > DATE_ADD(CURDATE(), INTERVAL 3 MONTH) THEN pp.amount ELSE 0 END), 0) AS total_jumlah, p.product_name, s.name AS satuan_name
+            FROM produk p
+            LEFT JOIN persediaan_produk_outlet pp ON pp.id_produk = p.id AND pp.id_outlet = :id
+            LEFT JOIN satuan s ON p.main_unit = s.id
+            GROUP BY p.id
+            ORDER BY total_jumlah DESC;
+        ");
         $this->db->bind('id', $id);
         return $this->db->allResult();
     }
-    public function searchAllPersediaanProdukByIdOutlet($id, $keyword){
-        $this->db->query("SELECT pp.id_produk, SUM(pp.amount) AS total_jumlah, p.product_name 
-            FROM persediaan_produk_outlet pp 
-            JOIN produk p ON pp.id_produk = p.id 
-            WHERE pp.id_outlet = :id 
-            AND p.product_name LIKE :keyword
-            GROUP BY pp.id_produk");
+    public function searchAllPersediaanProdukByIdOutlet($id, $keyword) {
+        $this->db->query("SELECT pp.id_produk, SUM(pp.amount) AS total_jumlah, p.product_name, s.name AS satuan_name
+            FROM persediaan_produk_outlet pp
+            JOIN produk p ON pp.id_produk = p.id
+            JOIN satuan s ON p.main_unit = s.id
+            WHERE pp.id_outlet = :id AND p.product_name LIKE :keyword AND pp.kadaluwarsa_date > DATE_ADD(CURDATE(), INTERVAL 3 MONTH)
+            GROUP BY pp.id_produk, s.name
+        ");
         $this->db->bind('id', $id);
         $this->db->bind('keyword', "%$keyword%");
         return $this->db->allResult();
     }
 
     // defecta
-    public function getAllDefectaHeadoffice(){
-        $this->db->query("SELECT pp.id_produk, SUM(pp.amount) AS total_jumlah, p.product_name, p.min_stock 
-        FROM persediaan_produk_headoffice pp 
-        JOIN produk p ON pp.id_produk = p.id
-        GROUP BY pp.id_produk
-        HAVING total_jumlah < p.min_stock");
+    public function getAllDefectaHeadoffice() {
+        $this->db->query("SELECT 
+                p.id AS id_produk, IFNULL(SUM(CASE WHEN pp.kadaluwarsa_date > DATE_ADD(CURDATE(), INTERVAL 3 MONTH) THEN pp.amount ELSE 0 END), 0)AS total_jumlah, p.product_name, p.min_stock, s.name AS satuan    
+            FROM produk p
+            LEFT JOIN persediaan_produk_headoffice pp ON pp.id_produk = p.id
+            LEFT JOIN satuan s ON p.main_unit = s.id
+            GROUP BY p.id
+            HAVING total_jumlah < p.min_stock
+        ");
         return $this->db->allResult();
-    }
-    public function searchAllDefectaHeadoffice($keyword){
-        $this->db->query("SELECT pp.id_produk, SUM(pp.amount) AS total_jumlah, p.product_name, p.min_stock 
-        FROM persediaan_produk_headoffice pp 
-        JOIN produk p ON pp.id_produk = p.id 
-        WHERE p.product_name LIKE :keyword
-        GROUP BY pp.id_produk
-        HAVING total_jumlah < p.min_stock");
+    }    
+    public function searchAllDefectaHeadoffice($keyword) {
+        $this->db->query("SELECT p.id AS id_produk, IFNULL(SUM(CASE WHEN pp.kadaluwarsa_date > DATE_ADD(CURDATE(), INTERVAL 3 MONTH) THEN pp.amount ELSE 0 END), 0) AS total_jumlah, p.product_name, p.min_stock, s.name AS satuan
+            FROM produk p
+            LEFT JOIN persediaan_produk_headoffice pp ON pp.id_produk = p.id
+            LEFT JOIN satuan s ON p.main_unit = s.id
+            WHERE p.product_name LIKE :keyword
+            GROUP BY p.id
+            HAVING total_jumlah < p.min_stock
+        ");
         $this->db->bind('keyword', "%$keyword%");
         return $this->db->allResult();
-    }
+    }    
 
     // public function getAllDefectaOutlet(){
     //     $this->db->query("SELECT pp.id_produk, SUM(pp.amount) AS total_jumlah, p.product_name, p.min_stock 
@@ -410,25 +460,26 @@ class ProdukModel {
     //     $this->db->bind('keyword', "%$keyword%");
     //     return $this->db->allResult();
     // }
-    public function getAllDefectaByIdOutlet($id){
-        $this->db->query("SELECT pp.id_produk, SUM(pp.amount) AS total_jumlah, p.product_name, p.min_stock, s.name AS satuan
-        FROM persediaan_produk_outlet pp 
-        JOIN produk p ON pp.id_produk = p.id 
-        JOIN satuan s ON p.main_unit = s.id
-        WHERE pp.id_outlet = :id
-        GROUP BY pp.id_produk
-        HAVING total_jumlah < p.min_stock");
+    public function getAllDefectaByIdOutlet($id) {
+        $this->db->query("SELECT p.id AS id_produk, IFNULL(SUM(CASE WHEN pp.kadaluwarsa_date > DATE_ADD(CURDATE(), INTERVAL 3 MONTH) THEN pp.amount ELSE 0 END), 0) AS total_jumlah, p.product_name, p.min_stock, s.name AS satuan
+            FROM produk p
+            LEFT JOIN persediaan_produk_outlet pp ON pp.id_produk = p.id AND pp.id_outlet = :id
+            LEFT JOIN satuan s ON p.main_unit = s.id
+            GROUP BY p.id
+            HAVING total_jumlah < p.min_stock
+        ");
         $this->db->bind('id', $id);
         return $this->db->allResult();
     }
-    public function searchAllDefectaByIdOutlet($id, $keyword){
-        $this->db->query("SELECT pp.id_produk, SUM(pp.amount) AS total_jumlah, p.product_name, p.min_stock 
-        FROM persediaan_produk_outlet pp 
-        JOIN produk p ON pp.id_produk = p.id 
-        WHERE pp.id_outlet = :id
-        AND p.product_name LIKE :keyword
-        GROUP BY pp.id_produk
-        HAVING total_jumlah < p.min_stock");
+    public function searchAllDefectaByIdOutlet($id, $keyword) {
+        $this->db->query("SELECT p.id AS id_produk, IFNULL(SUM(CASE WHEN pp.kadaluwarsa_date > DATE_ADD(CURDATE(), INTERVAL 3 MONTH) THEN pp.amount ELSE 0 END), 0) AS total_jumlah, p.product_name, p.min_stock,s.name AS satuan
+            FROM produk p
+            LEFT JOIN persediaan_produk_outlet pp ON pp.id_produk = p.id AND pp.id_outlet = :id
+            LEFT JOIN satuan s ON p.main_unit = s.id
+            WHERE p.product_name LIKE :keyword
+            GROUP BY p.id
+            HAVING total_jumlah < p.min_stock
+        ");
         $this->db->bind('id', $id);
         $this->db->bind('keyword', "%$keyword%");
         return $this->db->allResult();

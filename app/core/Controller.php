@@ -2,7 +2,7 @@
 class Controller {
     // property
     protected $insights = ['Tentang Aplikasi', 'Pusat Bantuan'];
-    protected $insightlinks = ['tentang_aplikasi', 'pusat_bantuan'];
+    protected $insightlinks = ['tentangAplikasi', 'pusatBantuan'];
 
     // view
     public function view_headoffice($file, $data = []){

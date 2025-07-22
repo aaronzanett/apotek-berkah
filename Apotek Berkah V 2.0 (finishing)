@@ -1,0 +1,12 @@
+- tambahkan pagination di halaman yang show data (semua file yang ada di folder views/headoffice dan views/admin kecuali dashboard, outlet, dan halaman transaksi seperti: transaksiPembelian, transaksiPenarikanStok, transaksiStokOpname, transaksiSupply) ini sudah ada datatable di folder js/public/js, terserah mau menggunakan datatable atau yang kamu buat sendiri
+- tambahkan fitur fitur sebagai berikut di halaman yang sesuai dan sesuaikan dengan tabel database yang sudah ada: 
+1. stok opname (opname stok produk di apotek)
+2. retur stok (retur stok yang sudah kadaluwarsa atau mendekati kadaluwarsa dengan stok yang baru dari supplier)
+3. penarikan stok (ini penarikan stok di gunakan ketika terdapat penarikan obat yang dianggap terlarang oleh bpom)
+4. tambahkan fitur dimana transaksi penjualan bisa diedit
+- khusus untuk tabel pagination halaman transasi tambahkan fitur tambahan yaitu dapat display berdasarkan jangka waktu dan laporan berbentuk MC office/pdf
+- perbagus tampilan transaksi sehingga memudahkan user untuk menggunakannya
+- sesuaikan seluruh tampilan menjadi senada dan sesuai dengan desain saat ini yang sudah saya buat
+- dapat print struk dari hosting, berikan solusi paling simpel dan mudah digunakan, berikan penjelasan untuk bagian ini
+- berikan penjelasan terhadap semua perubahan yang kamu lakukan, informasi lengkap seperti library apa saja yang digunakan, dan langkah saya selanjutnya hingga publish, dan bisa print struk dari hosting, dan berikan tutorial jika bisa untuk user saya menggunakan aplikasi secara utuh, bagaimana cara aplikasi bekerja, dll
+hapus semua yang tidak diperlukan

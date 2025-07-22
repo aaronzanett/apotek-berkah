@@ -1,8 +1,8 @@
-<section id="transaksi" class="transaksiSupply">
+<section id="transaksi" class="transaksiPenarikanStok">
     <div class="transactionPageHeader">
         <div class="transactionNav">
-            <a href="<?= BASEURL ?>/app/headoffice/supply"><i class="bi bi-arrow-left"></i></a>
-            <h2 class="pageTitle">Transaksi Supply</h2>
+            <a href="<?= BASEURL ?>/app/headoffice/penarikanStok"><i class="bi bi-arrow-left"></i></a>
+            <h2 class="pageTitle">Penarikan Stok</h2>
         </div>
         <div class="transactionSearch shadow">
             <div class="input">
@@ -37,42 +37,12 @@
             </div>
             <div class="transactionData">
                 <div class="form-group">
-                    <div class="sideButtonContainer">
-                        <div class="inputSideButton">
-                            <label for="faktur">Faktur</label>
-                            <input type="text" id="faktur" name="faktur" required maxlength="100">
-                        </div>
-                        <span class="btn edit sideButton autoFaktur"><i class="bi bi-arrow-clockwise"></i> Auto</span>
-                    </div>
-                </div>
-                <input type="hidden" name="outlet_name" id="outlet_name" val="">
-                <div class="form-group">
-                    <label for="outlet_id" class="form-label">Outlet (yang akan disupply)</label>
-                    <select name="outlet_id" id="outlet_id" required>
-                        <?php foreach ($data['outlet'] as $outlet) : ?>
-                            <option value="<?= $outlet['id'] ?>"><?= $outlet['name'] ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <label for="operator">Operator</label>
+                    <input type="operator" id="operator" name="operator" readonly value="<?= $_SESSION['pengguna'] ?>">
                 </div>
                 <div class="form-group">
-                    <label for="pemesan" class="form-label">Pemesan</label>
-                    <select name="pemesan" id="pemesan" required>
-                        <?php foreach ($data['kontakKaryawan'] as $pemesan) : ?>
-                            <option value="<?= $pemesan['fullname'] ?>"><?= $pemesan['fullname'] ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="headofficer">Headofficer</label>
-                    <input type="headofficer" id="headofficer" name="headofficer" readonly value="<?= $_SESSION['pengguna'] ?>">
-                </div>
-                <div class="form-group">
-                    <label for="pembayaran" class="form-label">Pembayaran</label>
-                    <select name="pembayaran" id="pembayaran" required>
-                        <?php foreach ($data['metodePembayaran'] as $mp) : ?>
-                            <option value="<?= $mp['name'] ?>"><?= $mp['name'] ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <label for="pelaku-penarikan">Pelaku Penarikan</label>
+                    <input type="pelaku-penarikan" id="pelaku-penarikan" name="pelaku-penarikan">
                 </div>
                 <div class="form-group">
                     <label for="datetime">Tanggal/waktu</label>
@@ -82,23 +52,6 @@
                     <label for="note">Note<span class="optional-input"> *</span></label>
                     <textarea name="note" id="note" rows="4" maxlength="500"></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="total">Total</label>
-                    <div class="inputHargaContainer">
-                        <span class="rp">Rp</span>
-                        <input type="text" id="total" class="inputHarga" name="total" readonly>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="bayar">Bayar</label>
-                    <div class="inputHargaContainer">
-                        <span class="rp">Rp</span>
-                        <input type="text" id="bayar" class="inputHarga" name="bayar" required>
-                    </div>
-                    <input type="hidden" name="piutang" id="piutang" val="">
-                    <p class="bayarTransaksiInfo d-none">Piutang sejumlah Rp. 0 ditambahkan secara otomatis dari transaksi ini</p>
-                </div>
-                <div class="jatuhTempo"></div>
 
                 <div class="configAlert transaksiConfigAlert d-none">
                     <p class="configNoProduk d-none">Pilih produk terlebih dahulu!</p>
@@ -126,66 +79,13 @@
 
 <script>
 $(function(){
-    $("#id").val(''),
-    $("#faktur").val(''),
-    $("#outlet_id").val(''),
-    $("#pemesan").val(''),
-    $("#pembayaran").val(''),
+    $("#pelaku-penarikan").val(''),
     $("#note").val('')
     
     // fungsi format ribuan
     function formatRibuan(number) {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
-    
-    // hitung harga
-    function hitungHarga() {
-        let total = 0;
-        $('.transactionItem').each(function () {
-            const item = $(this);
-            const hargaSupply = item.find('.hargaSupply').val().replace(/\./g, '') || 0;
-            let kuantitas = item.find('.kuantitas').val() || 0;
-            const satuanVal = item.find('.satuanPokok').val();
-            const hargaSatuan = hargaSupply * satuanVal;
-            const stok = item.find('.stok').val();
-
-            let maxqty = Math.floor(stok / satuanVal);
-
-            if(kuantitas > maxqty){
-                item.find('.kuantitas').val(maxqty)
-                kuantitas = maxqty;
-            }
-            
-            let subtotal = (hargaSatuan * kuantitas);
-            total = total + subtotal;
-
-            item.find('.harga').val(formatRibuan(hargaSatuan));
-            item.find('.subtotal').val(formatRibuan(subtotal));
-        });
-
-        // total
-        $("#total").val(formatRibuan(total))
-
-        // bayar & piutang
-        let bayar = $("#bayar").val().replace(/\./g, '');
-        if(bayar > total){
-            $("#bayar").val(formatRibuan(total))
-        }
-        let piutang = total - bayar;
-        if(piutang > 0){
-            $(".bayarTransaksiInfo").removeClass("d-none").text(`Piutang sejumlah Rp. ${formatRibuan(piutang)} ditambahkan secara otomatis dari transaksi ini`)
-            $("#piutang").val(piutang)
-            $(".jatuhTempo").html(`<div class="form-group">
-                    <label for="jatuhTempo">Jatuh Tempo Piutang</label>
-                    <input type="date" id="jatuhTempo" name="jatuhTempo" required>
-                </div>`)
-        }else{
-            $(".bayarTransaksiInfo").addClass("d-none")
-            $("#piutang").val(0)
-            $(".jatuhTempo").html("")
-        }
-    }
-    hitungHarga();
 
     // proses pilih stok produk
     $(document).on('click', '.pilihStokProduk', function() {
@@ -205,7 +105,6 @@ $(function(){
                 let kuantitasInput = produkItem.find('.kuantitas');
                 let existingQuantity = parseInt(kuantitasInput.val());
                 kuantitasInput.val(existingQuantity + 1);
-                hitungHarga();
                 $("#supplyProduk").focus();
             }else{
                 $.ajax({
@@ -223,7 +122,6 @@ $(function(){
                             let resultsItemCreate = `<div class="transactionItem" data-product-id="${data.id}" data-idpp="${idpp}">
                                 <input type="hidden" name="idProduk[]" value="${data.id}">
                                 <input type="hidden" name="produkName[]" value="${data.product_name}">
-                                <input type="hidden" name="hargaSupply[]" class="hargaSupply" value="${data.harga_supply}">
                                 <input type="hidden" name="satuanName[]" class="satuanName">
                                 <input type="hidden" name="stok[]" class="stok" value="${stok}">
                                 <input type="hidden" name="idpp[]" class="idpp" value="${idpp}">
@@ -246,18 +144,6 @@ $(function(){
                             resultsItemCreate += `</select>
                                 <div class="form-group transaksiKadaluwarsa">
                                     <input type="text" class="kadaluwarsa" name="kadaluwarsa[]" value="${kadaluwarsa}" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <div class="inputHargaContainer hargaContainer">
-                                        <span class="rp">Rp</span>
-                                        <input type="text" name="harga[]" class="inputHarga harga" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="inputHargaContainer">
-                                        <span class="rp">Rp</span>
-                                        <input type="text" name="subtotal[]" class="inputHarga subtotal" readonly>
-                                    </div>
                                 </div>
                             </div>`;
 

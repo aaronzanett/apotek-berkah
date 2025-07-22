@@ -1,1 +1,0 @@
-<h2>pembelian per supplier headoffice</h2>

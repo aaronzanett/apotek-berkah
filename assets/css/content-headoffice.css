@@ -79,6 +79,40 @@
     grid-template-columns: 30px 1fr 1fr;
 }
 
+/* OPNAME */
+#opname .tabledata-header {
+    grid-template-columns: 30px 1fr 1fr 1fr 55px;
+}
+#opname .tabledata-item {
+    grid-template-columns: 30px 1fr 1fr 1fr 55px;
+}
+/* TRANSAKSI OPNAME */
+#transaksi.transaksiOpname .transactionItemsHeader{
+    grid-template-columns: 30px 4fr 1fr;
+}
+#transaksi.transaksiOpname .transactionItem{
+    grid-template-columns: 30px 4fr 1fr;
+}
+#transaksi.transaksiOpname .transactionItem:hover{
+    background-color: #f7f7f7;
+    cursor: pointer;
+}
+
+/* RETUR PENARIKAN */
+#rp .tabledata-header {
+    grid-template-columns: 30px 1fr 1fr 1fr 55px;
+}
+#rp .tabledata-item {
+    grid-template-columns: 30px 1fr 1fr 1fr 55px;
+}
+/* TRANSAKSI PENARIKAN */
+#transaksi.transaksiPenarikanStok .transactionItemsHeader{
+    grid-template-columns: 30px 2fr 1fr 30px 1fr 1fr 120px 1fr 1fr;
+}
+#transaksi.transaksiPenarikanStok .transactionItem{
+    grid-template-columns: 30px 2fr 1fr 30px 1fr 1fr 120px 1fr 1fr;
+}
+
 /* PEMBELIAN */
 #pembelian .tabledata-header {
     grid-template-columns: 30px 2fr 1fr 1fr 1fr 1fr 1fr 55px;
@@ -88,10 +122,10 @@
 }
 /* TRANSAKSI PEMBELIAN */
 #transaksi.transaksiPembelian .transactionItemsHeader{
-    grid-template-columns: 30px 2fr 30px 1fr 1fr 120px 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 30px 2fr 30px 1fr 1fr 1fr 120px 1fr 1fr 1fr 1fr 1fr;
 }
 #transaksi.transaksiPembelian .transactionItem{
-    grid-template-columns: 30px 2fr 30px 1fr 1fr 120px 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 30px 2fr 30px 1fr 1fr 1fr 120px 1fr 1fr 1fr 1fr 1fr;
 }
 
 /* SUPPLY */
@@ -112,9 +146,6 @@
 #transaksi.transaksiSupply .transactionGroup{
     border-bottom: 1px solid rgb(241, 239, 239);
 }
-#transaksi.transaksiSupply .modal-content{
-    padding: 20px 5px 20px 20px;
-}
 #transaksi.transaksiSupply .pilihStokProduk{
     color: #3b3b3b;
 	list-style: none;
@@ -127,7 +158,11 @@
     cursor: pointer;
 	background-color: #e9f3ff;
 }
-#transaksi.transaksiSupply .stokProdukKosong{
+/* transaksi model ikut supply */
+#transaksi.transaksiSupply .modal-content, #transaksi.transaksiOpname .modal-content{
+    padding: 20px 5px 20px 20px;
+}
+#transaksi.transaksiSupply .stokProdukKosong, #transaksi.transaksiOpname .stokProdukKosong{
     text-align: center;
     color: #3b3b3b;
     padding: 5px 0 8px;

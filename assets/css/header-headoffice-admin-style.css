@@ -465,6 +465,8 @@ div#close-nav {
         right: 0;
         bottom: 0;
         left: 0;
+        width: 100vw;
+        height: 100vh;
         background-color: rgb(0, 0, 0);
         opacity: 0.5;
         z-index: 998;

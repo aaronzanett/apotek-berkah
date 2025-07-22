@@ -1,6 +1,7 @@
 {
     "require": {
         "picqer/php-barcode-generator": "^2.4",
-        "mike42/escpos-php": "^2.2"
+        "mike42/escpos-php": "^2.2",
+        "tecnickcom/tcpdf": "^6.7"
     }
 }

@@ -113,10 +113,6 @@ $data['penjualan'] = $this->model('PenjualanModel')->getAllPenjualan();
                         <td class="detailData">`+penjualan.cashier+`</td>
                     </tr>
                     <tr>
-                        <td class="detailInfo"><p>Pelanggan:</p></td>
-                        <td class="detailData">`+penjualan.customer+`</td>
-                    </tr>
-                    <tr>
                         <td class="detailInfo"><p>Pembayaran:</p></td>
                         <td class="detailData">`+penjualan.payment+`</td>
                     </tr>
@@ -188,7 +184,7 @@ $data['penjualan'] = $this->model('PenjualanModel')->getAllPenjualan();
                         </tr>
                         <tr>
                             <td class="detailInfo"><p>Harga / `+p.unit_name+` (pokok):</p></td>
-                            <td class="detailData">Rp. `+formatRibuan(p.jual_price)+`</td>
+                            <td class="detailData">Rp. `+formatRibuan(p.harga_jual_pokok)+`</td>
                         </tr>
                         <tr>
                             <td class="detailInfo"><p>Jenis Harga:</p></td>

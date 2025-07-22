@@ -29,10 +29,10 @@ $data['defecta'] = $this->model('ProdukModel')->getAllDefectaHeadoffice();
                         <?php if (count($data['defecta']) !== 0) { ?>
                             <?php $i = 1; foreach ($data['defecta'] as $produk ) : ?>
                                 <div class="tabledata-item">
-                                    <p class="no"><?= $i++ ?></p>
+                                <p class="no"><?= $i++ ?></p>
                                     <p><?= $produk['product_name'] ?></p>
-                                    <p><?= $produk['total_jumlah'] ?></p>
-                                    <p><?= $produk['min_stock'] ?></p>
+                                    <p><?= $produk['total_jumlah'] ?> <?= $produk['satuan'] ?></p>
+                                    <p><?= $produk['min_stock'] ?> <?= $produk['satuan'] ?></p>
                                 </div>
                             <?php endforeach;?>
                             <?php } else { ?>
@@ -68,11 +68,11 @@ $data['defecta'] = $this->model('ProdukModel')->getAllDefectaHeadoffice();
             let produk = "";
             data.forEach(p => {
                 produk += `<div class="tabledata-item">
-                                    <p class="no">`+ i++ +`</p>
-                                    <p>`+ p.product_name +`</p>
-                                    <p>`+ p.total_jumlah +`</p>
-                                    <p>`+ p.min_stock +`</p>
-                                </div>`;
+                                <p class="no">`+ i++ +`</p>
+                                <p>`+ p.product_name +`</p>
+                                <p>`+ p.total_jumlah + ' ' + p.satuan +`</p>
+                                <p>`+ p.min_stock + ' ' + p.satuan +`</p>
+                            </div>`;
             });
 
             if(data.length !== 0) {

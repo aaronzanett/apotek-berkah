@@ -26,6 +26,7 @@
                     <p></p>
                     <p>Kuantitas</p>
                     <p>Satuan</p>
+                    <p>No. Batch</p>
                     <p>Tgl. Kadaluwarsa</p>
                     <p>Jenis Harga</p>
                     <p>Harga / satuan</p>
@@ -243,6 +244,9 @@ $(function(){
                                 resultsCreate += `<option value="${s.value}" data-satuan-name="${s.satuan_name}">${s.satuan_name} (${s.value})</option>`;
                             });
                             resultsCreate += `</select>
+                                <div class="form-group noBatch">
+                                    <input type="text" id="noBatch" class="noBatch" name="noBatch[]" required autocomplete="off">
+                                </div>
                                 <div class="form-group transaksiKadaluwarsa">
                                     <input type="date" id="kadaluwarsa" class="kadaluwarsa" name="kadaluwarsa[]" required>
                                 </div>
@@ -402,6 +406,9 @@ $(function(){
                                     resultsCreate += `<option value="${s.value}" data-satuan-name="${s.satuan_name}">${s.satuan_name} (${s.value})</option>`;
                                 });
                                 resultsCreate += `</select>
+                                    <div class="form-group noBatch">
+                                        <input type="text" id="noBatch" class="noBatch" name="noBatch[]" required autocomplete="off">
+                                    </div>
                                     <div class="form-group transaksiKadaluwarsa">
                                         <input type="date" id="kadaluwarsa" class="kadaluwarsa" name="kadaluwarsa[]" required>
                                     </div>

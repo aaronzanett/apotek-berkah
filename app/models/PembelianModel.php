@@ -14,9 +14,15 @@ class PembelianModel {
         }
         return $allResult;
     }
+
+    // dashboard needed
+    public function getTodayPembelian(){
+        $this->db->query("SELECT COALESCE(SUM(total_price), 0) AS pembelian_hari_ini FROM pembelian WHERE DATE(datetime) = CURDATE()");
+        return $this->db->singleResult()['pembelian_hari_ini'];
+    }
     
     public function addPembelian($data){
-        $queryPembelian = "INSERT INTO pembelian (id, supplier, orderer, subtotal, diskon, ppn, total_price, dibayar, utang, datetime, payment, faktur, note) VALUES ('', :supplier, :orderer, :subtotal, :diskon, :ppn, :total_price, :dibayar, :utang, :datetime, :payment, :faktur, :note)";
+        $queryPembelian = "INSERT INTO pembelian (supplier, orderer, subtotal, diskon, ppn, total_price, dibayar, utang, datetime, payment, faktur, note) VALUES (:supplier, :orderer, :subtotal, :diskon, :ppn, :total_price, :dibayar, :utang, :datetime, :payment, :faktur, :note)";
         $this->db->query($queryPembelian);
         $this->db->bind('supplier', $data['supplier']);
         $this->db->bind('orderer', $data['orderer']);
@@ -41,7 +47,7 @@ class PembelianModel {
 
         // utang
         if($data['utang'] > 0){
-            $queryUtang = "INSERT INTO utang (id, name, faktur, tagihan_awal, telah_dibayar, total_sisa, jatuh_tempo) VALUES ('', 'pembelian', :faktur, :utang, '', :utang, :jatuh_tempo)";
+            $queryUtang = "INSERT INTO utang (name, faktur, tagihan_awal, telah_dibayar, total_sisa, jatuh_tempo) VALUES ('pembelian', :faktur, :utang, '', :utang, :jatuh_tempo)";
             $this->db->query($queryUtang);
             $this->db->bind('faktur', $data['faktur']);
             $this->db->bind('utang', $data['utang']);
@@ -52,14 +58,15 @@ class PembelianModel {
         if(isset($data['idProduk']) && isset($data['produkName']) && isset($data['subtotal'])){
             // detail pembelian
             foreach ($data['idProduk'] as $i => $ip) {
-                $queryDetailPembelian = "INSERT INTO detail_pembelian (id, pembelian_id, produk_name, base_unit_price, unit_name, quantity, unit_value, kadaluwarsa, jenis_harga, unit_price, diskon, subtotal) VALUES ('', :pembelian_id, :produk_name, :base_unit_price, :unit_name, :quantity, :unit_value, :kadaluwarsa, :jenis_harga, :unit_price, :diskon, :subtotal)";
+                $queryDetailPembelian = "INSERT INTO detail_pembelian (pembelian_id, produk_name, harga_beli_pokok, unit_name, quantity, unit_value, no_batch, kadaluwarsa, jenis_harga, unit_price, diskon, subtotal) VALUES (:pembelian_id, :produk_name, :harga_beli_pokok, :unit_name, :quantity, :unit_value, :no_batch, :kadaluwarsa, :jenis_harga, :unit_price, :diskon, :subtotal)";
                 $this->db->query($queryDetailPembelian);
                 $this->db->bind('pembelian_id', $idPembelian);
                 $this->db->bind('produk_name', $data['produkName'][$i]);
-                $this->db->bind('base_unit_price', $data['hargaBeliPokok'][$i]);
+                $this->db->bind('harga_beli_pokok', $data['hargaBeliPokok'][$i]);
                 $this->db->bind('unit_name', $data['satuanName'][$i]);
                 $this->db->bind('quantity', $data['kuantitas'][$i]);
                 $this->db->bind('unit_value', $data['satuanPokok'][$i]);
+                $this->db->bind('no_batch', $data['noBatch'][$i]);
                 $this->db->bind('kadaluwarsa', $data['kadaluwarsa'][$i]);
                 $this->db->bind('jenis_harga', $data['jenisHarga'][$i]);
                 $this->db->bind('unit_price', $data['harga'][$i]);
@@ -72,16 +79,18 @@ class PembelianModel {
             foreach ($data['idProduk'] as $i => $ip) {
                 $amount = $data['kuantitas'][$i] * $data['satuanPokok'][$i];
 
-                $queryPersediaanProduk = "INSERT INTO persediaan_produk_headoffice (id, id_produk, amount, kadaluwarsa_date) VALUES ('', :id_produk, :amount, :kadaluwarsa_date)";
+                $queryPersediaanProduk = "INSERT INTO persediaan_produk_headoffice (id_produk, harga_beli_pokok, amount, no_batch, kadaluwarsa_date) VALUES (:id_produk, :harga_beli_pokok, :amount, :no_batch, :kadaluwarsa_date)";
                 $this->db->query($queryPersediaanProduk);
                 $this->db->bind('id_produk', $ip);
+                $this->db->bind('harga_beli_pokok', $data['hargaBeliPokok'][$i]);
                 $this->db->bind('amount', $amount);
+                $this->db->bind('no_batch', $data['noBatch'][$i]);
                 $this->db->bind('kadaluwarsa_date', $data['kadaluwarsa'][$i]);
                 $this->db->execute();
             }
 
             // cashbook
-            $queryCashBook = "INSERT INTO cashbook_headoffice (id, status, faktur, activity, user, datetime, total) VALUES ('', :status, :faktur, :activity, :user, :datetime, :total)";
+            $queryCashBook = "INSERT INTO cashbook_headoffice (status, faktur, activity, user, datetime, total) VALUES (:status, :faktur, :activity, :user, :datetime, :total)";
             $this->db->query($queryCashBook);
             $this->db->bind('status', 'pengeluaran');
             $this->db->bind('faktur', $data['faktur']);

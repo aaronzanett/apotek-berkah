@@ -24,9 +24,20 @@ class SupplyModel {
         }
         return $allResult;
     }
+
+    // dashboard needed
+    public function getTodaySupply(){
+        $this->db->query("SELECT COALESCE(SUM(total_price), 0) AS supply_hari_ini FROM supply WHERE DATE(datetime) = CURDATE()");
+        return $this->db->singleResult()['supply_hari_ini'];
+    }
+    public function getTodaySupplyOutlet($outletId){
+        $this->db->query("SELECT COALESCE(SUM(total_price), 0) AS supply_hari_ini FROM supply WHERE DATE(datetime) = CURDATE() AND outlet_id = :outletId");
+        $this->db->bind('outletId', $outletId);
+        return $this->db->singleResult()['supply_hari_ini'];
+    }
     
     public function addSupply($data){
-        $querySupply = "INSERT INTO supply (id, outlet_id, outlet_name, orderer, headofficer, total_price, dibayar, piutang, datetime, payment, faktur, note) VALUES ('', :outlet_id, :outlet_name, :orderer, :headofficer, :total_price, :dibayar, :piutang, :datetime, :payment, :faktur, :note)";
+        $querySupply = "INSERT INTO supply (outlet_id, outlet_name, orderer, headofficer, total_price, dibayar, piutang, datetime, payment, faktur, note) VALUES (:outlet_id, :outlet_name, :orderer, :headofficer, :total_price, :dibayar, :piutang, :datetime, :payment, :faktur, :note)";
         $this->db->query($querySupply);
         $this->db->bind('outlet_id', $data['outlet_id']);
         $this->db->bind('outlet_name', $data['outlet_name']);
@@ -50,7 +61,7 @@ class SupplyModel {
 
         // piutang
         if($data['piutang'] > 0){
-            $queryPiutang = "INSERT INTO piutang (id, outlet_id, name, faktur, tagihan_awal, telah_dibayar, total_sisa, jatuh_tempo) VALUES ('', :outlet_id, 'supply', :faktur, :piutang, '', :piutang, :jatuh_tempo)";
+            $queryPiutang = "INSERT INTO piutang (outlet_id, name, faktur, tagihan_awal, telah_dibayar, total_sisa, jatuh_tempo) VALUES (:outlet_id, 'supply', :faktur, :piutang, '', :piutang, :jatuh_tempo)";
             $this->db->query($queryPiutang);
             $this->db->bind('outlet_id', $data['outlet_id']);
             $this->db->bind('faktur', $data['faktur']);
@@ -66,51 +77,73 @@ class SupplyModel {
 
             // detail supply
             foreach ($data['idProduk'] as $i => $ip) {
-                $queryDetailSupply = "INSERT INTO detail_supply (id, supply_id, produk_name, supply_price, unit_name, quantity, unit_value, unit_price, kadaluwarsa, subtotal) VALUES ('', :supply_id, :produk_name, :supply_price, :unit_name, :quantity, :unit_value, :unit_price, :kadaluwarsa, :subtotal)";
+                // Ambil harga beli pokok
+                $queryGetHargaBeli = "SELECT harga_beli_pokok FROM persediaan_produk_headoffice WHERE id = :idpp";
+                $this->db->query($queryGetHargaBeli);
+                $this->db->bind('idpp', $data['idpp'][$i]);
+                $result = $this->db->singleResult();
+                $hargaBeliPokok = $result['harga_beli_pokok'];
+
+                // Detail supply
+                $queryDetailSupply = "INSERT INTO detail_supply (supply_id, produk_name, harga_beli_pokok, harga_supply_pokok, unit_name, quantity, unit_value, unit_price, no_batch, kadaluwarsa, subtotal) VALUES (:supply_id, :produk_name, :harga_beli_pokok, :harga_supply_pokok, :unit_name, :quantity, :unit_value, :unit_price, :no_batch, :kadaluwarsa, :subtotal)";
                 $hargaSatuan = $data['hargaSupply'][$i] * $data['satuanPokok'][$i];
                 $this->db->query($queryDetailSupply);
                 $this->db->bind('supply_id', $idSupply);
                 $this->db->bind('produk_name', $data['produkName'][$i]);
-                $this->db->bind('supply_price', $data['hargaSupply'][$i]);
+                $this->db->bind('harga_beli_pokok', $hargaBeliPokok);
+                $this->db->bind('harga_supply_pokok', $data['hargaSupply'][$i]);
                 $this->db->bind('unit_name', $data['satuanName'][$i]);
                 $this->db->bind('quantity', $data['kuantitas'][$i]);
                 $this->db->bind('unit_value', $data['satuanPokok'][$i]);
                 $this->db->bind('unit_price', $hargaSatuan);
+                $this->db->bind('no_batch', $data['noBatch'][$i]);
                 $this->db->bind('kadaluwarsa', $data['kadaluwarsa'][$i]);
                 $this->db->bind('subtotal', $data['subtotal'][$i]);
                 $this->db->execute();
             }
 
-            // kurang persediaan produk headoffice
+            // kurang persediaan produk headoffice, tambah persediaan produk outlet (transfer stok)
             foreach ($data['idProduk'] as $i => $ip) {
                 $amount = $data['kuantitas'][$i] * $data['satuanPokok'][$i];
+
+                // Ambil no_batch berdasarkan idpp
+                $queryGetNoBatch = "SELECT harga_beli_pokok, no_batch FROM persediaan_produk_headoffice WHERE id = :idpp";
+                $this->db->query($queryGetNoBatch);
+                $this->db->bind('idpp', $data['idpp'][$i]);
+                $result = $this->db->singleResult();
+                $hargaBeliPokok = $result['harga_beli_pokok'];
+                $no_batch = $result['no_batch'];
+
+                // Update amount persediaan_produk_headoffice
                 $queryUpdatePP = "UPDATE persediaan_produk_headoffice SET amount = amount - :amount WHERE id = :idpp";
                 $this->db->query($queryUpdatePP);
                 $this->db->bind('amount', $amount);
                 $this->db->bind('idpp', $data['idpp'][$i]);
                 $this->db->execute();
 
+                // Delete jika amount <= 0
                 $queryDeleteEmptyPP = "DELETE FROM persediaan_produk_headoffice WHERE id = :idpp AND amount <= 0";
                 $this->db->query($queryDeleteEmptyPP);
                 $this->db->bind('idpp', $data['idpp'][$i]);
                 $this->db->execute();
-            }
 
-            // tambah persediaan produk outlet
-            foreach ($data['idProduk'] as $i => $ip) {
-                $amount = $data['kuantitas'][$i] * $data['satuanPokok'][$i];
-
-                $queryPersediaanProduk = "INSERT INTO persediaan_produk_outlet (id, id_produk, id_outlet, amount, kadaluwarsa_date) VALUES ('', :id_produk, :id_outlet, :amount, :kadaluwarsa_date)";
+                // tambah persediaan produk outlet
+                $queryPersediaanProduk = "INSERT INTO persediaan_produk_outlet (id_produk, id_outlet, harga_beli_pokok, harga_supply_pokok, amount, no_batch, kadaluwarsa_date) 
+                                        VALUES (:id_produk, :id_outlet, :harga_beli_pokok, :harga_supply_pokok, :amount, :no_batch, :kadaluwarsa_date)";
                 $this->db->query($queryPersediaanProduk);
                 $this->db->bind('id_produk', $ip);
                 $this->db->bind('id_outlet', $data['outlet_id']);
+                $this->db->bind('harga_beli_pokok', $hargaBeliPokok);
+                $this->db->bind('harga_supply_pokok', $data['hargaSupply'][$i]);
                 $this->db->bind('amount', $amount);
+                $this->db->bind('no_batch', $no_batch);
                 $this->db->bind('kadaluwarsa_date', $data['kadaluwarsa'][$i]);
                 $this->db->execute();
             }
 
+
             // cashbook headoffice
-            $queryCashBook = "INSERT INTO cashbook_headoffice (id, status, faktur, activity, user, datetime, total) VALUES ('', :status, :faktur, :activity, :user, :datetime, :total)";
+            $queryCashBook = "INSERT INTO cashbook_headoffice (status, faktur, activity, user, datetime, total) VALUES (:status, :faktur, :activity, :user, :datetime, :total)";
             $this->db->query($queryCashBook);
             $this->db->bind('status', 'pemasukan');
             $this->db->bind('faktur', $data['faktur']);
@@ -121,7 +154,7 @@ class SupplyModel {
             $this->db->execute();
 
             // cashbook outlet
-            $queryCashBook = "INSERT INTO cashbook_outlet (id, outlet_id, status, faktur, activity, user, datetime, total) VALUES ('', :outlet_id, :status, :faktur, :activity, :user, :datetime, :total)";
+            $queryCashBook = "INSERT INTO cashbook_outlet (outlet_id, status, faktur, activity, user, datetime, total) VALUES (:outlet_id, :status, :faktur, :activity, :user, :datetime, :total)";
             $this->db->query($queryCashBook);
             $this->db->bind('outlet_id', $data['outlet_id']);
             $this->db->bind('status', 'pengeluaran');

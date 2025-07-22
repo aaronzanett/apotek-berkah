@@ -4,7 +4,7 @@ class App extends Controller {
     private $navigations_headoffice = [
     'Dashboard', 
     ['Master Data', 'Master Produk', 'Master Kategori', 'Master Satuan', 'Master Rak', 'Metode Pembayaran'],
-    ['Persediaan', 'Persediaan Produk', 'Defecta', 'Stok Kadaluwarsa', 'Retur Stok Outlet', 'Stok Opname', 'Riwayat Stok Opname'],
+    ['Persediaan', 'Persediaan Produk', 'Defecta', 'Stok Kadaluwarsa', 'Retur Stok', 'Stok Opname', 'Penarikan Stok'],
     'Pembelian',
     'Supply',
     'Penjualan',
@@ -16,7 +16,7 @@ class App extends Controller {
     private $navlinks_headoffice = [
     'dashboard', 
     ['masterData', 'masterProduk', 'masterKategori', 'masterSatuan', 'masterRak', 'metodePembayaran'], 
-    ['persediaan', 'persediaanProduk', 'defecta', 'stokKadaluwarsa', 'returStokOutlet', 'stokOpname', 'riwayatStokOpname'], 
+    ['persediaan', 'persediaanProduk', 'defecta', 'stokKadaluwarsa', 'returStok', 'stokOpname', 'penarikanStok'], 
     'pembelian', 
     'supply',
     'penjualan', 
@@ -29,7 +29,7 @@ class App extends Controller {
     // admin
     private $navigations_admin = [
     'Dashboard',
-    ['Persediaan', 'Persediaan Produk', 'Defecta', 'Stok Kadaluwarsa', 'Stok Opname', 'Riwayat Stok Opname'],
+    ['Persediaan', 'Persediaan Produk', 'Stok Outlet Lain', 'Defecta', 'Stok Kadaluwarsa', 'Retur Stok', 'Stok Opname', 'Penarikan Stok'],
     'Kasir',
     'Supply',
     'Penjualan',
@@ -38,7 +38,7 @@ class App extends Controller {
     ];
     private $navlinks_admin = [
     'dashboard',
-    ['persediaan', 'persediaanProduk', 'defecta', 'stokKadaluwarsa', 'stokOpname', 'riwayatStokOpname'],
+    ['persediaan', 'persediaanProduk', 'stokOutletLain', 'defecta', 'stokKadaluwarsa', 'returStok', 'stokOpname', 'penarikanStok'],
     'kasir',
     'supply',
     'penjualan',
@@ -116,7 +116,6 @@ class App extends Controller {
     public function loginAdminHeadoffice(){
         $this->template('loginAdminHeadoffice');
     }
-
     public function logout(){
         $this->template('logoutAdminHeadoffice');
     }
