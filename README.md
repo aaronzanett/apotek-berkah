@@ -67,7 +67,7 @@ npm install
 ### 👨‍💻 Author
 
 Aaron Zanett Samudra
-GitHub: [@aaronzanettsamudraweb](https://github.com/aaronzanettsamudraweb)
+GitHub: [@aaronzanettsamudraweb](https://github.com/aaronzanett)
 
 ---
 
